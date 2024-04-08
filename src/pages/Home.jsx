@@ -1,46 +1,14 @@
-import { useParams } from 'react-router-dom';
-import './home.css'
-const Home = () => {
-  const { userType } = useParams();
-
-  // Function to render features based on user type
-  const feature = () => {
-    return(
-      <div  className='home-side-container'>
-        <div><img className='side-container-img' src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14" alt="" /></div>
-        <div className='side-container-box'><h2 style={{marginLeft:"50px"}}>Profile Details</h2></div>
-        <div  className='side-container-box'><h2 style={{marginLeft:"50px"}}>Create Account</h2></div>
-        <div  className='side-container-box'><h2 style={{marginLeft:"50px"}}>Manage Accounts</h2></div>
-        <div  className='side-container-box'><h2 style={{marginLeft:"50px"}}>Manage Marks</h2></div>
-        <div  className='side-container-box'><h2 style={{marginLeft:"50px"}}>Give Attendance</h2></div>
-        <div  className='side-container-box'><h2 style={{marginLeft:"50px"}}>Logout Account</h2></div>
-
-      </div>
-    )
-  }
-  const renderFeatures = () => {
-    switch (userType) {
-      case 'type1':
-        return <div>Features A-F</div>;
-      case 'type2':
-        return <div>Features A-E</div>;
-      case 'type3':
-        return <div>Features A-D</div>;
-      case 'type4':
-        return <div>Features A-C</div>;
-      case 'type5':
-        return <div>Features A-B</div>;
-      default:
-        return <div>Invalid user type</div>;
-    }
-  };
-
+import React from 'react'
+import "./home.css"
+function Home() {
   return (
-    <div style={{backgroundColor:"rgb(229, 171, 238)"}}>
-      {/* <h2>Welcome to Home Page</h2> */}
-      {feature()}
+    <div className='home-div'> 
+        <img className='adds-img' src="https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png" alt="" />
+        <img className='adds-img' src="https://dynamic.brandcrowd.com/template/preview/design/4b3af255-6e27-4eed-b924-e0f487879956/cef0bfe5-7e67-4b7f-8ea4-af3859fcb0ce?v=4&designTemplateVersion=1&logoTemplateVersion=4&size=design-preview-standalone-1x" alt="" />
+        <img className='adds-img' src="https://optimise2.assets-servd.host/messy-parrot/production/images/BSQ-Exam-Results-Hero-banner.png?w=1064&h=580&auto=compress%2Cformat&fit=crop&dm=1660839849&s=d6da5f515967316d1a95f2f8f9a0477e" alt="" />
+        <img className='adds-img' src="https://png.pngtree.com/background/20210709/original/pngtree-sports-basketball-backplane-picture-image_780138.jpg" alt="" />
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
