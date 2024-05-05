@@ -337,7 +337,10 @@ const UserHome = () => {
         </div>
         <div className='use-columntype'>
           <label>Description</label>
-          <input style={{width:"500px", height:"300px"}}></input>
+          <input style={{width:"500px", height:"100px"}}></input>
+        </div><div className='use-columntype'>
+          <label>Breif Description</label>
+          <input style={{width:"500px", height:"200px"}}></input>
         </div>
         <div>
           <label>Related Links</label>
