@@ -1,0 +1,40 @@
+.home-side-container{
+  display: flex;
+  flex-direction: column;
+  /* background-color: rgb(174, 117, 183); */
+  width: 300px;
+}
+.side-container-img{
+  width: 120px;
+  height: 120px;
+  margin-left: 40px;
+}
+.side-container-box{
+  height: 60px;
+  border: 1px solid;
+}
+
+.mainsection{
+  width: 50%;
+  margin-left: 50px;
+  /* background-color: aquamarine; */
+}
+.profile-img{
+  width: 250px;
+  height: 250px;
+}
+
+.blogsection{
+  width: 400px;
+  /* background-color: aquamarine; */
+
+}
+
+.use-rowtype{
+  display: flex;
+  flex-direction: row;
+}
+.use-columntype{
+  display: flex;
+  flex-direction: column;
+}

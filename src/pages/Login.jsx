@@ -78,11 +78,13 @@ const Login = () => {
                   className='input'
                 >
                   <option value="">Select User Type</option>
-                  <option value="type1">Type 1</option>
-                  <option value="type2">Type 2</option>
-                  <option value="type3">Type 3</option>
-                  <option value="type4">Type 4</option>
-                  <option value="type5">Type 5</option>
+                  <option value="hm">hm</option>
+                  <option value="vhm">vhm</option>
+                  <option value="teacher-admin">teacher-admin</option>
+                  <option value="teacher">teacher</option>
+                  <option value="class-leader">class-leader</option>
+                  <option value="student-admin">student-admin</option>
+                  <option value="student">student</option>
                 </select>
               </label>
               <label className='text-lable'>
@@ -138,11 +140,13 @@ const Login = () => {
                   className='input'
                 >
                   <option value="">Select User Type</option>
-                  <option value="type1">Type 1</option>
-                  <option value="type2">Type 2</option>
-                  <option value="type3">Type 3</option>
-                  <option value="type4">Type 4</option>
-                  <option value="type5">Type 5</option>
+                  <option value="hm">hm</option>
+                  <option value="vhm">vhm</option>
+                  <option value="teacher-admin">teacher-admin</option>
+                  <option value="teacher">teacher</option>
+                  <option value="class-leader">class-leader</option>
+                  <option value="student-admin">student-admin</option>
+                  <option value="student">student</option>
                 </select>
               </label>
               <label className='text-lable'>
