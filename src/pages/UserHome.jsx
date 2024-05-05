@@ -29,32 +29,6 @@ const UserHome = () => {
     science: '',
     social: ''
   });
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Here you can handle form submission, e.g., send data to backend or perform any action
-    console.log(formData); // For testing, you can log the form data to the console
-    // Reset form after submission (if needed)
-    setFormData({
-      idNumber: '',
-      name: '',
-      class: '',
-      unitTest: '',
-      telugu: '',
-      hindi: '',
-      english: '',
-      maths: '',
-      science: '',
-      social: ''
-    });
-  };
-  
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
   const handleSelect = (e) => {
     const value = e.currentTarget.getAttribute("data-value");
     setMainSection(value)
@@ -66,8 +40,8 @@ const UserHome = () => {
   const renderFeatures = () => {
     switch (userType) {
       case "hm":
-      // case "vhm":
-      // case "teacher-admin":  
+      case "vhm":
+      case "teacher-admin":  
         return (
           <div className="home-side-container">
             <div>
@@ -111,7 +85,7 @@ const UserHome = () => {
             <div className="side-container-box">
               <h2 style={{ marginLeft: "50px" }}>TEACHER</h2>
             </div>
-            <div className="side-container-box" onClick={handleSelect} data-value={"hm-profile"}>
+            <div className="side-container-box" onClick={handleSelect} data-value={"teacher-profile"}>
               <h2 style={{ marginLeft: "50px" }}>Profile Details</h2>
             </div>
             <div className="side-container-box" data-value={"manageMarks"} onClick={handleSelect}>
@@ -175,6 +149,15 @@ const UserHome = () => {
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       <div className="sidebar">{renderFeatures()}</div>
+
+
+      {mainSection === "profile" ? 
+          <div className="mainsection">
+        <div >
+         <h1 style={{marginLeft:"100px", marginTop:"200px"}}>You can see all your activities here !</h1>
+        </div>
+      </div> :<></>  
+    }
       {mainSection === "hm-profile" ? 
           <div className="mainsection">
         <div>
@@ -198,6 +181,40 @@ const UserHome = () => {
               <div style={{ display: "flex", flexDirection: "row" }}>
                 <h3> Designation : </h3>
                 <h3 style={{ marginLeft: "10px" }}>HEAD MASTER</h3>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h2>Year Of Working</h2>
+            <p>joined in this school 2018 june 16 and contiuing</p>
+          </div>
+        </div>
+      </div> :<></>  
+    }
+
+{mainSection === "teacher-profile" ? 
+          <div className="mainsection">
+        <div>
+          <div
+            style={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
+          >
+            <img
+              className="profile-img"
+              src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
+              alt=""
+            />
+            <div style={{ marginLeft: "50px" }}>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <h3>Name : </h3>
+                <h3 style={{ marginLeft: "10px" }}>Virat Kohli</h3>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <h3>Qualification : </h3>
+                <h3 style={{ marginLeft: "10px" }}>B.Ed</h3>
+              </div>
+              <div style={{ display: "flex", flexDirection: "row" }}>
+                <h3> Designation : </h3>
+                <h3 style={{ marginLeft: "10px" }}>TEACHER</h3>
               </div>
             </div>
           </div>
@@ -331,14 +348,6 @@ const UserHome = () => {
       </div>
       </div> : <></>
   }
-
-  
-
-
-
-
-
-
 { mainSection === "student-profile" ? 
    <div className="mainsection">
         <div>
