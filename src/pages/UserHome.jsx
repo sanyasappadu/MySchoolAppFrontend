@@ -46,7 +46,7 @@ const UserHome = () => {
   const fetchData = async () => {
     try {
       // const response = await fetch('http://localhost:4000/api/getUser/T024MES234');
-      const response = await fetch('https://myschoolappbackend.onrender.com/api/getUser/T024MES234');
+      const response = await fetch('https://myschoolappbackend.onrender.com/api/getUser/T024MES208');
       const jsonData = await response.json();
       setData(jsonData);
     } catch (error) {
