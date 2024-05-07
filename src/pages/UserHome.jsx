@@ -55,7 +55,7 @@ const UserHome = () => {
   useEffect(() => {
     fetchData();
   }, []); // empty dependency array means this effect runs once after the first render
-
+// console.log(data.role)
   return (
     <div style={{ display: "flex", flexDirection: "row" }}>
       {/* <div className="sidebar">{renderFeatures()}</div> */}
