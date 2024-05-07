@@ -29,7 +29,15 @@ const UserHome = () => {
     { name: "Science", marks: 20 },
     { name: "Social", marks: 20 },
   ];
-
+  const roles = {
+    hm : ["profileDetails", "creatTeacher", "createStudent", "createBlogs", "createMarkSheet"],
+    vhm : ["profileDetails", "creatTeacher", "createStudent", "createBlogs", "createMarkSheet"],
+    teacherAdmin : ["profileDetails", "creatTeacher", "createStudent", "createBlogs", "createMarkSheet"],
+    teacher : ["profileDetails", "createBlogs", "createMarkSheet"],
+    classLeader : ["profileDetails", "createBlogs", "createMarkSheet"],
+    studentAdmin : ["profileDetails", "createBlogs", "createMarkSheet"],
+    student : ["profileDetails"],
+  }
   const [data, setData] = useState(null);
 
   // Function to fetch data from the API
