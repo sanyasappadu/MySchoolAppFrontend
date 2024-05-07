@@ -40,24 +40,24 @@ const UserHome = () => {
     science: '',
     social: ''
   });
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
 
-  // Function to fetch data from the API
-  const fetchData = async () => {
-    try {
-      // const response = await fetch('http://localhost:4000/api/getUser/T024MES234');
-      const response = await fetch('https://myschoolappbackend.onrender.com/api/getUser/T024MES208');
-      const jsonData = await response.json();
-      setData(jsonData);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+  // // Function to fetch data from the API
+  // const fetchData = async () => {
+  //   try {
+  //     // const response = await fetch('http://localhost:4000/api/getUser/T024MES234');
+  //     const response = await fetch('https://myschoolappbackend.onrender.com/api/getUser/T024MES208');
+  //     const jsonData = await response.json();
+  //     setData(jsonData);
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
 
-  // useEffect hook to fetch data when component mounts
-  useEffect(() => {
-    fetchData();
-  }, []); // empty dependency array means this effect runs once after the first render
+  // // useEffect hook to fetch data when component mounts
+  // useEffect(() => {
+  //   fetchData();
+  // }, []); // empty dependency array means this effect runs once after the first render
 
 
   const handleSubmit = (e) => {
@@ -554,14 +554,14 @@ const UserHome = () => {
           </div>
         </div>
       </div>
-      <div>
+      {/* <div>
       <h1>API Data:</h1>
       {data ? (
         <pre>{JSON.stringify(data, null, 2)}</pre>
       ) : (
         <p>Loading...</p>
       )}
-    </div>
+    </div> */}
 
       <div className="blogsection">
       <List sx={{ width: '100%', bgcolor: 'background.paper' }}>
