@@ -2,7 +2,7 @@
   display: flex;
   flex-direction: column;
   /* background-color: rgb(174, 117, 183); */
-  width: 300px;
+  width: 12%;
 }
 .side-container-img{
   width: 120px;
@@ -15,7 +15,7 @@
 }
 
 .mainsection{
-  width: 50%;
+  width: 60%;
   margin-left: 50px;
   /* background-color: aquamarine; */
 }
@@ -25,7 +25,7 @@
 }
 
 .blogsection{
-  width: 400px;
+  width: 32%;
   /* background-color: aquamarine; */
 
 }
