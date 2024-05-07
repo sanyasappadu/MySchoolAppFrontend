@@ -1,14 +1,55 @@
-import React from 'react'
-import "./home.css"
+import * as React from "react";
+import { styled } from "@mui/material/styles";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import ImageListItem from "@mui/material/ImageListItem";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  textAlign: "center",
+  color: theme.palette.text.secondary,
+}));
+const itemData = [
+  {
+    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+  },
+  {
+    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+  },
+  {
+    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+  },
+  {
+    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+  },
+];
+
 function Home() {
   return (
-    <div className='home-div'> 
-        <img className='adds-img' src="https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png" alt="" />
-        <img className='adds-img' src="https://dynamic.brandcrowd.com/template/preview/design/4b3af255-6e27-4eed-b924-e0f487879956/cef0bfe5-7e67-4b7f-8ea4-af3859fcb0ce?v=4&designTemplateVersion=1&logoTemplateVersion=4&size=design-preview-standalone-1x" alt="" />
-        <img className='adds-img' src="https://optimise2.assets-servd.host/messy-parrot/production/images/BSQ-Exam-Results-Hero-banner.png?w=1064&h=580&auto=compress%2Cformat&fit=crop&dm=1660839849&s=d6da5f515967316d1a95f2f8f9a0477e" alt="" />
-        <img className='adds-img' src="https://png.pngtree.com/background/20210709/original/pngtree-sports-basketball-backplane-picture-image_780138.jpg" alt="" />
+    <div>
+      <Box sx={{ width: "80%" , m:"8%"}}>
+        <Grid container rowSpacing={5} columnSpacing={10}>
+          {itemData.map((item) => (
+            <Grid item xs={6}>
+              <Item>
+              <ImageListItem key={item.img}>
+                <img
+                  srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                  src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
+                  alt={item.title}
+                  loading="lazy"
+                />
+              </ImageListItem>
+              </Item>
+            </Grid>
+          ))}
+        </Grid>
+      </Box>
     </div>
-  )
+  );
 }
 
-export default Home
+export default Home;
