@@ -14,16 +14,16 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 const itemData = [
   {
-    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+    img: "https://png.pngtree.com/thumb_back/fh260/back_pic/05/09/43/985984b912a8c46.jpg",
   },
   {
-    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+    img: "https://static.vecteezy.com/system/resources/thumbnails/007/937/497/small/educational-logic-toys-for-montessori-games-creative-banner-landing-page-for-a-website-in-a-flat-style-montessori-school-sensory-education-with-the-help-of-didactic-classes-vector.jpg",
   },
   {
-    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+    img: "https://images.twinkl.co.uk/tw1n/image/private/t_630_eco/image_repo/e8/b7/t-t-13023-sports-day-display-banner_ver_1.jpg",
   },
   {
-    img: "https://avk.edu.in/wp-content/uploads/2023/06/OPEN-FOR-2023-24-1.png",
+    img: "https://schools.clipart.com/siteimages/slides/main1-sm.jpg",
   },
 ];
 
