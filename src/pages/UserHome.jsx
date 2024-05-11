@@ -1,9 +1,14 @@
 
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import "./userhome.css";
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
+import CardMedia from '@mui/material/CardMedia';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
@@ -11,6 +16,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
+import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
@@ -40,75 +46,129 @@ const UserHome = () => {
     studentAdmin : ["profileDetails", "createBlogs", "createMarkSheet"],
     student : ["profileDetails"],
   }
-  const [data, setData] = useState(null);
   const [name, setName] = useState(null);
-  const [userRole, setUserRole] = useState("student");
-  const [userRole1, setUserRole1] = useState([]);
+  const [userRole, setUserRole] = useState([]);
+  const [blogs, setBlogs] = useState([]);
   const [name1, setName1] = useState("profileDetails");
-  const [formData, setFormData] = useState({
-    idNumber: '',
-    name: '',
-    heading: '',
-    relatedLinks: '',
-    description: '',
-    briefDescription: ''
-  });
+  // Function to fetch data from the API
+  const API_CREATEBLOG = 'https://myschoolappbackend.onrender.com/api/blog';
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-  };
-
-  const handleSave = async () => {
+  const handleBlogSubmit = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const userData = {
+      "name": formData.get('name'),
+      "role": formData.get('role'),
+      "idnumber": formData.get('idnumber'),
+      "heading": formData.get('heading'),
+      "relatedLinks": formData.get('relatedLinks'),
+      "description": formData.get('description'),
+      "briefDescription": formData.get('briefDescription'),
+    };
+    console.log(userData)
     try {
-      const response = await fetch('https://myschoolappbackend.onrender.com/api/blog', {
+      const response = await fetch(API_CREATEBLOG, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(userData),
       });
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+
+      if (response.ok) {
+        // Handle success (e.g., redirect or show success message)
+        console.log('Blog saved successfully!');
+      } else {
+        // Handle error response
+        console.error('Blog not saved !:', response.statusText);
       }
-      // Reset form data after successful save
-      setFormData({
-        idNumber: '',
-        name: '',
-        heading: '',
-        relatedLinks: '',
-        description: '',
-        briefDescription: ''
-      });
-      console.log('Blog saved successfully');
     } catch (error) {
-      console.error('Error saving blog:', error);
+      console.error('Error:', error.message);
     }
   };
-  // Function to fetch data from the API
+  const [selectedBlog, setSelectedBlog] = useState();
+
+  const handleBlogClick = async (blogId) => {
+    try {
+      const response = await fetch(`https://myschoolappbackend.onrender.com/api/blog/${blogId}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch blog');
+      }
+      const blogData = await response.json();
+      console.log(blogData.data.blog)
+      setSelectedBlog(blogData.data.blog); // Store the retrieved blog data in state
+      setName1("blog")
+    } catch (error) {
+      console.error('Error fetching blog:', error);
+    }
+  };
+  const API_CREATESTUDENT = 'https://myschoolappbackend.onrender.com/api/register';
+
+  const handleCreateUser = async (event) => {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const userData = {
+      "name": formData.get('name'),
+      "role": formData.get('role'),
+      "email": formData.get('email'),
+      "password": formData.get('password'),
+      "class": formData.get('class'),
+      "role": formData.get('role'),
+      "qualification": formData.get('qualification'),
+      "experience": formData.get('experience'),
+      "yearOfJoin": formData.get('yearOfJoin'),
+      "salaryDetails": formData.get('salaryDetails'),
+    };
+    console.log(userData)
+    try {
+      const response = await fetch(API_CREATESTUDENT, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      if (response.ok) {
+        // Handle success (e.g., redirect or show success message)
+        console.log('Blog saved successfully!');
+      } else {
+        // Handle error response
+        console.error('Blog not saved !:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error:', error.message);
+    }
+  };
   const fetchData = async () => {
     try {
       const response = await fetch(`https://myschoolappbackend.onrender.com/api/getUser/${userEmail}`);
       const jsonData = await response.json();
-      // setUserRole();
-      setUserRole1(roles[jsonData.user.role])
-
+      setUserRole(roles[jsonData.user.role])
       console.log(jsonData.user.role);
       setName(jsonData.user.name);
-      setData(jsonData);
     } catch (error) {
       console.error('Error fetching data:', error);
     }
   };
   useEffect(() => {
-    console.log(userRole)
+    const fetchBlogsData = async () => {
+      try {
+        const response = await fetch('https://myschoolappbackend.onrender.com/api/blogs');
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const data = await response.json();
+        console.log(data.data.blogs)
+        setBlogs(data.data.blogs); // Assigning fetched data to the blogs variable
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    fetchBlogsData();
     fetchData();
-    console.log(userRole)
   }, []); 
-  // console.log(data)
   const handleListItemClick = (text) => {
     setName1(text); // Set name1 state to the corresponding role based on the text
     console.log(text)
@@ -134,7 +194,7 @@ const UserHome = () => {
                 <ListItemText primary={name} />
               </ListItemButton>
             </ListItem>
-            {userRole1.map((text, index) => (
+            {userRole.map((text, index) => (
               <ListItem key={text} disablePadding value={index}>
                 <ListItemButton onClick={() => handleListItemClick(text)}>
                   <ListItemIcon>
@@ -229,79 +289,130 @@ const UserHome = () => {
           </div>
         </div>
       )}
+      {name1 === "blog" && (
+        <div className="mainsection">
+          <h1>BLOG DETAILS</h1>
+          {/* Render other blog details as needed */}
+          <Card sx={{ maxWidth: 600, marginTop: 2}} key={selectedBlog.id}>
+             <CardMedia
+               component="img"
+               alt="green iguana"
+               height="140"
+               image={selectedBlog.referenceLink}
+             />
+             <CardContent>
+               <Typography gutterBottom variant="h5" component="div">{selectedBlog.heading}</Typography>
+               <Typography variant="body2" color="text.secondary">{selectedBlog.description}</Typography>
+             </CardContent>
+             <CardActions>
+               <Button size="small">{selectedBlog.name}</Button>
+               <Button size="small">{selectedBlog.idnumber}</Button>
+             </CardActions>
+           </Card>
+        </div>
+      )}
 
       {name1 === "createBlogs" && (
-     <div className="mainsection">
-     <h1>Create blogs</h1>
-     <form
-       onSubmit={(e) => {
-         e.preventDefault();
-         handleSave();
-       }}
-     >
-       <div>
-         <TextField
-           id="idNumber"
-           name="idNumber"
-           label="Id Number"
-           type="text"
-           value={formData.idNumber}
-           onChange={handleChange}
-         />
-         <TextField
-           id="name"
-           name="name"
-           label="Name"
-           type="text"
-           value={formData.name}
-           onChange={handleChange}
-         />
-         <TextField
-           id="heading"
-           name="heading"
-           label="Heading"
-           type="text"
-           value={formData.heading}
-           onChange={handleChange}
-         />
-         <TextField
-           id="relatedLinks"
-           name="relatedLinks"
-           label="Related Links"
-           type="text"
-           value={formData.relatedLinks}
-           onChange={handleChange}
-         />
-       </div>
-       <TextField
-         id="description"
-         name="description"
-         label="Description"
-         type="text"
-         multiline
-         rows={4}
-         value={formData.description}
-         onChange={handleChange}
-       />
-       <TextField
-         id="briefDescription"
-         name="briefDescription"
-         label="Brief Description"
-         type="text"
-         multiline
-         rows={6}
-         value={formData.briefDescription}
-         onChange={handleChange}
-       />
-       <Button
-         type="submit"
-         variant="contained"
-         sx={{ marginTop: 2, marginLeft: 10 }}
-       >
-         Save
-       </Button>
-     </form>
-   </div>
+        <div className="mainsection">
+          <h1>Create blogs</h1>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={handleBlogSubmit}
+            sx={{ mt: 3 }}
+          >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  autoComplete="given-name"
+                  name="idnumber"
+                  required
+                  fullWidth
+                  id="idnumber"
+                  label="ID NUMBER"
+                  autoFocus
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  id="name"
+                  label="NAME"
+                  name="name"
+                  autoComplete="name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="heading"
+                  label="HEADING"
+                  type="heading"
+                  id="heading"
+                  autoComplete="new-heading"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="relatedLinks"
+                  label="RELATED LINKS"
+                  type="relatedLinks"
+                  id="relatedLinks"
+                  autoComplete="new-relatedLinks"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="role"
+                  label="ROLE"
+                  type="role"
+                  id="role"
+                  autoComplete="new-role"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  multiline
+                  rows={4}
+                  name="description"
+                  label="DESCRIPTION"
+                  type="description"
+                  id="description"
+                  autoComplete="new-description"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  fullWidth
+                  required
+                  multiline
+                  rows={6}
+                  name="briefDescription"
+                  label="BRIEF DESCRIPTION"
+                  type="briefDescription"
+                  id="briefDescription"
+                  autoComplete="new-briefDescription"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              SAVE BLOG
+            </Button>
+          </Box>
+        </div>
       )}
       {name1 === "createMarkSheet" && (
         <div className="mainsection">
@@ -311,90 +422,143 @@ const UserHome = () => {
       )}
       {name1 === "createStudent" && (
         <div className="mainsection">
-          <h1>Create New Student Account</h1>
+          <h1>Create New User Account</h1>
           <Box
             component="form"
-            sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
-            }}
             noValidate
-            autoComplete="off"
+            onSubmit={handleCreateUser}
+            sx={{ mt: 3 }}
           >
-            <div>
-              <Box
-                component="form"
-                sx={{
-                  "& .MuiTextField-root": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
                 <TextField
-                  id="outlined-password-input"
-                  label="Name"
-                  type="name"
+                  required
+                  fullWidth
+                  id="name"
+                  label="NAME"
+                  name="name"
+                  autoComplete="name"
                 />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
-                  id="outlined-password-input"
-                  select
-                  label="Gender"
-                  type="gender"
-                >
-                  {[
-                    { value: "Male" },
-                    { value: "Female" },
-                    { value: "Others" },
-                  ].map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  id="outlined-password-input"
-                  select
-                  label="Role"
-                  type="role"
-                >
-                  {[
-                    { value: "studentAdmin" },
-                    { value: "classLeader" },
-                    { value: "student" },
-                  ].map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  id="outlined-password-input"
-                  label="Email"
+                  required
+                  fullWidth
+                  name="email"
+                  label="email"
                   type="email"
+                  id="email"
+                  autoComplete="new-email"
                 />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
-                  id="outlined-password-input"
+                  required
+                  fullWidth
+                  name="gender"
+                  label="gender"
+                  type="gender"
+                  id="gender"
+                  autoComplete="new-gender"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="role"
+                  label="ROLE"
+                  type="role"
+                  id="role"
+                  autoComplete="new-role"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="class"
+                  label="class"
+                  type="class"
+                  id="class"
+                  autoComplete="new-class"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password"
                   label="Password"
                   type="password"
-                  autoComplete="current-password"
+                  id="password"
+                  autoComplete="new-password"
                 />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
-                  id="outlined-password-input"
-                  label="Phone Number"
-                  type="phonenumber"
+                  required
+                  fullWidth
+                  name="qualification"
+                  label="qualification"
+                  type="qualification"
+                  id="qualification"
+                  autoComplete="new-qualification"
                 />
+              </Grid>
+              <Grid item xs={12}>
                 <TextField
-                  id="outlined-password-input"
-                  label="Class"
-                  type="class"
+                  required
+                  fullWidth
+                  name="subjects"
+                  label="subjects"
+                  type="subjects"
+                  id="subjects"
+                  autoComplete="new-subjects"
                 />
-                <Button
-                  variant="contained"
-                  sx={{ marginTop: 2, marginLeft: 10 }}
-                >
-                  Save
-                </Button>
-              </Box>
-            </div>
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="experience"
+                  label="experience"
+                  type="experience"
+                  id="experience"
+                  autoComplete="new-experience"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="yearOfJoin"
+                  label="yearOfJoin"
+                  type="yearOfJoin"
+                  id="yearOfJoin"
+                  autoComplete="new-yearOfJoin"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="salaryDetails"
+                  label="salaryDetails"
+                  type="salaryDetails"
+                  id="salaryDetails"
+                  autoComplete="new-salaryDetails"
+                />
+              </Grid>
+            </Grid>
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              sx={{ mt: 3, mb: 2 }}
+            >
+              SAVE STUDENT
+            </Button>
           </Box>
         </div>
       )}
@@ -506,127 +670,16 @@ const UserHome = () => {
         </div>
       )}
 
-      {/* <div className="mainsection">
-        <div>
-          <div
-            style={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
-          >
-            <img
-              className="profile-img"
-              src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
-              alt=""
-            />
-            <div style={{ marginLeft: "50px" }}>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h3>Name : </h3>
-                <h3 style={{ marginLeft: "10px" }}>Virat Kohli</h3>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h3>Qualification : </h3>
-                <h3 style={{ marginLeft: "10px" }}>M.Ed</h3>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h3> Designation : </h3>
-                <h3 style={{ marginLeft: "10px" }}>HEAD MASTER</h3>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h2>Year Of Working</h2>
-            <p>joined in this school 2018 june 16 and contiuing</p>
-          </div>
-        </div>
-      </div> */}
-      {/* 
-      <div className="mainsection">
-        <div>
-          <div
-            style={{ display: "flex", flexDirection: "row", marginTop: "20px" }}
-          >
-            <img
-              className="profile-img"
-              src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
-              alt=""
-            />
-            <div style={{ marginLeft: "50px" }}>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h3>Name : </h3>
-                <h3 style={{ marginLeft: "10px" }}>Virat Kohli</h3>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h3>Class : </h3>
-                <h3 style={{ marginLeft: "10px" }}>5th</h3>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h3> Section : </h3>
-                <h3 style={{ marginLeft: "10px" }}>A</h3>
-              </div>
-            </div>
-          </div>
-          <div>
-            <h2>Year Of Studying</h2>
-            <p>joined in this school 2018 june 16 and contiuing</p>
-          </div>
-          <div>
-            <h2>Mark sheets</h2>
-            <div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h5>ID Number :</h5>
-                <h5>S2017H123</h5>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h5>Name :</h5>
-                <h5>Virat Kohli</h5>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h5>Class : </h5>
-                <h5>5th</h5>
-              </div>
-              <div style={{ display: "flex", flexDirection: "row" }}>
-                <h5>Unit Test :</h5>
-                <h5>1st</h5>
-              </div>
-            </div>
-            <table style={{ width: "100%" }}>
-              <thead>
-                <tr>
-                  {subjects.map((subject) => (
-                    <th key={subject.name} style={{ textAlign: "start" }}>
-                      {subject.name}
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  {subjects.map((subject) => (
-                    <td key={subject.name} style={{ textAlign: "start" }}>
-                      {subject.marks}
-                    </td>
-                  ))}
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div> */}
-      {/* <div>
-      <h1>API Data:</h1>
-      {data ? (
-        <pre>{JSON.stringify(data, null, 2)}</pre>
-      ) : (
-        <p>Loading...</p>
-      )}
-    </div> */}
 
       <div className="blogsection">
-        <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            </ListItemAvatar>
+        {blogs.map((blog) => (
+          <ListItem alignItems="flex-start"
+          key={blog._id}
+          // onClick={() => handleBlogClick()}
+          onClick={() => handleBlogClick(blog._id)}
+          >
             <ListItemText
-              primary="Brunch this weekend?"
+              primary={blog.heading}
               secondary={
                 <React.Fragment>
                   <Typography
@@ -635,61 +688,18 @@ const UserHome = () => {
                     variant="body2"
                     color="text.primary"
                   >
-                    Ali Connors
+                    {blog.name}
                   </Typography>
-                  {" — I'll be in your neighborhood doing errands this…"}
+                  {blog.description}
                 </React.Fragment>
               }
             />
           </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Travis Howard" src="/static/images/avatar/2.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Summer BBQ"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    to Scott, Alex, Jennifer
-                  </Typography>
-                  {" — Wish I could come, but I'm out of town this…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-          <Divider variant="inset" component="li" />
-          <ListItem alignItems="flex-start">
-            <ListItemAvatar>
-              <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
-            </ListItemAvatar>
-            <ListItemText
-              primary="Oui Oui"
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    Sandra Adams
-                  </Typography>
-                  {" — Do you have Paris recommendations? Have you ever…"}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
-        </List>
+        ))}
       </div>
     </div>
   );
 };
 
 export default UserHome;
+
