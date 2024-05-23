@@ -73,7 +73,7 @@ export default function DrawerAppBar(props: Props) {
             component="div"
             sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
           >
-            MUI
+            My English Medium School
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <Link to="/blogs" className="link-component">

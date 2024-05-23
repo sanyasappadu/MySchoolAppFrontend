@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import "./userhome.css";
+import axios from "axios";
+
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import CardMedia from '@mui/material/CardMedia';
@@ -10,7 +12,6 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,7 +21,6 @@ import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import MenuItem from '@mui/material/MenuItem';
 import Avatar from '@mui/material/Avatar';
-import ListItemAvatar from '@mui/material/ListItemAvatar';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import FactCheckTwoToneIcon from '@mui/icons-material/FactCheckTwoTone';
 import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
@@ -38,18 +38,24 @@ const UserHome = () => {
     { name: "Social", marks: 20 },
   ];
   const roles = {
-    hm : ["profileDetails", "createTeacher", "createStudent", "createBlogs", "createMarkSheet"],
-    vhm : ["profileDetails", "createTeacher", "createStudent", "createBlogs", "createMarkSheet"],
-    teacherAdmin : ["profileDetails", "createTeacher", "createStudent", "createBlogs", "createMarkSheet"],
-    teacher : ["profileDetails", "createBlogs", "createMarkSheet"],
-    classLeader : ["profileDetails", "createBlogs", "createMarkSheet"],
-    studentAdmin : ["profileDetails", "createBlogs", "createMarkSheet"],
-    student : ["profileDetails"],
+    "Head Master" : ["Profile Details", "Update Profile", "Create New User", "Create Blogs", "Create Marksheet"],
+    "Vice Head Master" : ["Profile Details", "Update Profile", "Create New User", "Create Blogs", "Create Marksheet"],
+    "Teacher Admin" : ["Profile Details", "Update Profile", "Create New User", "Create Blogs", "Create Marksheet"],
+    "Teacher" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet"],
+    "Student Class Leader" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet"],
+    "Student Admin" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet"],
+    "Student" : ["Profile Details", "Update Profile"],
   }
-  const [name, setName] = useState(null);
+  const [name, setName] = useState("");
+  const [idnumber, setIdNumber] = useState("");
+  const [role, setRole] = useState("");
+  const [qualification, setQualification] = useState("");
+  const [clas, setClas] = useState("");
+
+  const [profileData, setProfileData] = useState({});
   const [userRole, setUserRole] = useState([]);
   const [blogs, setBlogs] = useState([]);
-  const [name1, setName1] = useState("profileDetails");
+  const [name1, setName1] = useState("Profile Details");
   // Function to fetch data from the API
   const API_CREATEBLOG = 'https://myschoolappbackend.onrender.com/api/blog';
 
@@ -140,18 +146,61 @@ const UserHome = () => {
       console.error('Error:', error.message);
     }
   };
-  const fetchData = async () => {
-    try {
-      const response = await fetch(`https://myschoolappbackend.onrender.com/api/getUser/${userEmail}`);
-      const jsonData = await response.json();
-      setUserRole(roles[jsonData.user.role])
-      console.log(jsonData.user.role);
-      setName(jsonData.user.name);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    }
-  };
+    const [formData, setFormData] = useState({
+      name: "",
+      gender: "",
+      role: "",
+      password: "",
+      phonenumber: "",
+      qualification: "",
+      experience: "",
+      yearOfJoin: "",
+      subjects: "",
+      class: "",
+      img: "",
+      isPasswordSet: false,
+    });
+  
+    const handleChange = (e) => {
+      const { name, value } = e.target;
+      setFormData((prevData) => ({
+        ...prevData,
+        [name]: value,
+      }));
+    };
+  
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+        const response = await axios.put(
+          `https://myschoolappbackend.onrender.com/api/updateUser/${userEmail}`,
+          formData
+        );
+        console.log("User updated successfully", response.data);
+        // Handle success, e.g., show a success message
+      } catch (error) {
+        console.error("An error occurred", error);
+        // Handle error, e.g., show an error message
+      }
+    };
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`https://myschoolappbackend.onrender.com/api/getUser/${userEmail}`);
+        const jsonData = await response.json();
+        setUserRole(roles[jsonData.user.role])
+        // console.log(jsonData);
+        setName(jsonData.user.name);
+        setIdNumber(jsonData.user.idnumber);
+        setRole(jsonData.user.role);
+        setQualification(jsonData.user.qualification);
+        setClas(jsonData.user.class);
+
+        setProfileData(jsonData)
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
     const fetchBlogsData = async () => {
       try {
         const response = await fetch('https://myschoolappbackend.onrender.com/api/blogs');
@@ -159,15 +208,15 @@ const UserHome = () => {
           throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        console.log(data.data.blogs)
         setBlogs(data.data.blogs); // Assigning fetched data to the blogs variable
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     };
-
+    console.log(profileData)
     fetchBlogsData();
     fetchData();
+    console.log(profileData)
   }, []); 
   const handleListItemClick = (text) => {
     setName1(text); // Set name1 state to the corresponding role based on the text
@@ -198,11 +247,11 @@ const UserHome = () => {
               <ListItem key={text} disablePadding value={index}>
                 <ListItemButton onClick={() => handleListItemClick(text)}>
                   <ListItemIcon>
-                    {text === "profileDetails" && <AccountCircleTwoToneIcon />}
-                    {text === "createTeacher" && <ManageAccountsTwoToneIcon />}
-                    {text === "createStudent" && <ManageAccountsTwoToneIcon />}
-                    {text === "createBlogs" && <FactCheckTwoToneIcon />}
-                    {text === "createMarkSheet" && <FactCheckTwoToneIcon />}
+                    {text === "Profile Details" && <AccountCircleTwoToneIcon />}
+                    {text === "Update Profile" && <ManageAccountsTwoToneIcon />}
+                    {text === "Create New User" && <ManageAccountsTwoToneIcon />}
+                    {text === "Create Blogs" && <FactCheckTwoToneIcon />}
+                    {text === "Create Marksheet" && <FactCheckTwoToneIcon />}
                   </ListItemIcon>
                   <ListItemText primary={text} />
                 </ListItemButton>
@@ -211,9 +260,34 @@ const UserHome = () => {
           </List>
         </Box>
       </div>
-      {name1 === "profileDetails" && (
+      {name1 === "Profile Details" && (
         <div className="mainsection">
-          <div>
+             <Card sx={{ maxWidth: "100%" , height:600, margin: 4 }}>
+      <CardMedia
+        sx={{ height: 300 , width: 300, marginLeft: "30%", marginTop: "5%" }}
+        image="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
+        title="green iguana"
+      />
+      <CardContent sx={{display: "flex", flexDirection:"row", marginLeft:"25%"}}>
+        <Typography gutterBottom variant="h3" component="div">
+          {name}
+        </Typography>
+        <Typography variant="h5" color="text.secondary" sx={{marginTop:2.5, marginLeft:2}}>
+        {qualification || clas}
+        </Typography>
+      </CardContent>
+      <Typography variant="h4" color="text.secondary" sx={{marginLeft: "26.5%"}}>
+        {role}
+        </Typography>
+        <Typography variant="h4" color="text.secondary" sx={{marginLeft: "26.5%", marginTop:2}}>
+        {idnumber}
+        </Typography>
+      {/* <CardActions>
+        <Button size="small">Share</Button>
+        <Button size="small">Learn More</Button>
+      </CardActions> */}
+    </Card>
+          {/* <div>
             <div
               style={{
                 display: "flex",
@@ -286,12 +360,12 @@ const UserHome = () => {
                 </tbody>
               </table>
             </div>
-          </div>
+          </div> */}
         </div>
       )}
       {name1 === "blog" && (
         <div className="mainsection">
-          <h1>BLOG DETAILS</h1>
+          <h1 style={{marginLeft:"10%"}}>BLOG DETAILS</h1>
           {/* Render other blog details as needed */}
           <Card sx={{ maxWidth: 600, marginTop: 2}} key={selectedBlog.id}>
              <CardMedia
@@ -312,7 +386,7 @@ const UserHome = () => {
         </div>
       )}
 
-      {name1 === "createBlogs" && (
+      {name1 === "Create Blogs" && (
         <div className="mainsection">
           <h1>Create blogs</h1>
           <Box
@@ -414,13 +488,13 @@ const UserHome = () => {
           </Box>
         </div>
       )}
-      {name1 === "createMarkSheet" && (
+      {name1 === "Create Marksheet" && (
         <div className="mainsection">
           <h1>Announce The Exam Marks</h1>
           {/* <TableComponent /> */}
         </div>
       )}
-      {name1 === "createStudent" && (
+      {name1 === "Create New User" && (
         <div className="mainsection">
           <h1>Create New User Account</h1>
           <Box
@@ -430,7 +504,7 @@ const UserHome = () => {
             sx={{ mt: 3 }}
           >
             <Grid container spacing={2}>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -440,7 +514,7 @@ const UserHome = () => {
                   autoComplete="name"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -451,7 +525,7 @@ const UserHome = () => {
                   autoComplete="new-email"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -462,7 +536,7 @@ const UserHome = () => {
                   autoComplete="new-gender"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -473,7 +547,7 @@ const UserHome = () => {
                   autoComplete="new-role"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -484,7 +558,7 @@ const UserHome = () => {
                   autoComplete="new-class"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -495,7 +569,7 @@ const UserHome = () => {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -506,7 +580,7 @@ const UserHome = () => {
                   autoComplete="new-qualification"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -517,7 +591,7 @@ const UserHome = () => {
                   autoComplete="new-subjects"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -528,7 +602,7 @@ const UserHome = () => {
                   autoComplete="new-experience"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -539,7 +613,7 @@ const UserHome = () => {
                   autoComplete="new-yearOfJoin"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={6}>
                 <TextField
                   required
                   fullWidth
@@ -562,112 +636,304 @@ const UserHome = () => {
           </Box>
         </div>
       )}
-      {name1 === "createTeacher" && (
-        <div className="mainsection">
-          <h1>Create New Teacher Account</h1>
+      {name1 === "Update Profile" && (
+          <div className="mainsection">
+          <h1>Update User Information</h1>
           <Box
             component="form"
+            onSubmit={handleSubmit}
             sx={{
               "& .MuiTextField-root": { m: 1, width: "25ch" },
             }}
             noValidate
             autoComplete="off"
           >
-            <div>
-              <Box
-                component="form"
-                sx={{
-                  "& .MuiTextField-root": { m: 1, width: "25ch" },
-                }}
-                noValidate
-                autoComplete="off"
-              >
-                <TextField
-                  id="outlined-password-input"
-                  label="Name"
-                  type="name"
-                />
-                <TextField
-                  id="outlined-password-input"
-                  select
-                  label="Gender"
-                  type="gender"
-                >
-                  {[
-                    { value: "Male" },
-                    { value: "Female" },
-                    { value: "Others" },
-                  ].map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  id="outlined-password-input"
-                  select
-                  label="Designation"
-                  type="role"
-                >
-                  {[
-                    { value: "hm" },
-                    { value: "vhm" },
-                    { value: "teachetAdmin" },
-                    { value: "teachet" },
-                  ].map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  id="outlined-password-input"
-                  label="Email"
-                  type="email"
-                />
-                <TextField
-                  id="outlined-password-input"
-                  label="Password"
-                  type="password"
-                  autoComplete="current-password"
-                />
-                <TextField
-                  id="outlined-password-input"
-                  label="Phone Number"
-                  type="phonenumber"
-                />
-                <TextField
-                  id="outlined-password-input"
-                  select
-                  label="Qualification"
-                  type="qualification"
-                >
-                  {[
-                    { value: "bTech" },
-                    { value: "Mtech" },
-                    { value: "B.Ed" },
-                    { value: "M.Ed" },
-                  ].map((option) => (
-                    <MenuItem key={option.value} value={option.value}>
-                      {option.value}
-                    </MenuItem>
-                  ))}
-                </TextField>
-                <TextField
-                  id="outlined-password-input"
-                  label="Experience"
-                  type="experience"
-                />
-                <Button
-                  variant="contained"
-                  sx={{ marginTop: 2, marginLeft: 10 }}
-                >
-                  Save
-                </Button>
-              </Box>
-            </div>
+            <TextField
+              id="outlined-name-input"
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <TextField
+              id="outlined-gender-input"
+              select
+              label="Gender"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+            >
+              {["Male", "Female", "Other"].map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="outlined-role-input"
+              select
+              label="Role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+            >
+              {[
+                "Head Master",
+                "Vice Head Master",
+                "Teacher Admin",
+                "Teacher",
+                "Student Admin",
+                "Student Class Leader",
+                "Student",
+              ].map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="outlined-password-input"
+              label="Password"
+              name="password"
+              type="password"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <TextField
+              id="outlined-phonenumber-input"
+              label="Phone Number"
+              name="phonenumber"
+              value={formData.phonenumber}
+              onChange={handleChange}
+            />
+            <TextField
+              id="outlined-qualification-input"
+              select
+              label="Qualification"
+              name="qualification"
+              value={formData.qualification}
+              onChange={handleChange}
+            >
+              {["bTech", "Mtech", "B.Ed", "M.Ed"].map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+            <TextField
+              id="outlined-experience-input"
+              label="Experience"
+              name="experience"
+              value={formData.experience}
+              onChange={handleChange}
+            />
+            <TextField
+              id="outlined-yearofjoin-input"
+              label="Year Of Join"
+              name="yearOfJoin"
+              value={formData.yearOfJoin}
+              onChange={handleChange}
+            />
+            <TextField
+              id="outlined-subjects-input"
+              select
+              label="Subjects"
+              name="subjects"
+              value={formData.subjects}
+              onChange={handleChange}
+            >
+              {["Telugu", "Hindi", "English", "Maths", "Science", "Social"].map(
+                (option) => (
+                  <MenuItem key={option} value={option}>
+                    {option}
+                  </MenuItem>
+                )
+              )}
+            </TextField>
+            <TextField
+              id="outlined-class-input"
+              select
+              label="Class"
+              name="class"
+              value={formData.class}
+              onChange={handleChange}
+            >
+              {[
+                "4th Class",
+                "5th Class",
+                "6th Class",
+                "7th Class",
+                "8th Class",
+                "9th Class",
+                "10th Class",
+              ].map((option) => (
+                <MenuItem key={option} value={option}>
+                  {option}
+                </MenuItem>
+              ))}
+            </TextField>
+            <Button
+              variant="contained"
+              type="submit"
+              sx={{ marginTop: 2, marginLeft: 10 }}
+            >
+              Save Updates
+            </Button>
           </Box>
         </div>
+        // <div className="mainsection">
+        //   <h1>Create New Teacher Account</h1>
+        //   <Box
+        //     component="form"
+        //     sx={{
+        //       "& .MuiTextField-root": { m: 1, width: "25ch" },
+        //     }}
+        //     noValidate
+        //     autoComplete="off"
+        //   >
+        //     <div>
+        //       <Box
+        //         component="form"
+        //         sx={{
+        //           "& .MuiTextField-root": { m: 1, width: "25ch" },
+        //         }}
+        //         noValidate
+        //         autoComplete="off"
+        //       >
+        //         <TextField
+        //           id="outlined-password-input"
+        //           label="Name"
+        //           type="name"
+        //         />
+        //         <TextField
+        //           id="outlined-password-input"
+        //           select
+        //           label="Gender"
+        //           type="gender"
+        //         >
+        //           {[
+        //             { value: "Male" },
+        //             { value: "Female" },
+        //             { value: "Others" },
+        //           ].map((option) => (
+        //             <MenuItem key={option.value} value={option.value}>
+        //               {option.value}
+        //             </MenuItem>
+        //           ))}
+        //         </TextField>
+        //         <TextField
+        //           id="outlined-password-input"
+        //           select
+        //           label="Role"
+        //           type="role"
+        //         >
+        //           {[
+        //             { value: "Head Master" },
+        //             { value: "Vice Head Master" },
+        //             { value: "Teacher Admin" },
+        //             { value: "Teacher" },
+        //             { value: "Student Admin" },
+        //             { value: "Student Class Leader" },
+        //             { value: "Student" },
+        //           ].map((option) => (
+        //             <MenuItem key={option.value} value={option.value}>
+        //               {option.value}
+        //             </MenuItem>
+        //           ))}
+        //         </TextField>
+        //         <TextField
+        //           id="outlined-password-input"
+        //           label="Email"
+        //           type="email"
+        //         />
+        //         <TextField
+        //           id="outlined-password-input"
+        //           label="Password"
+        //           type="password"
+        //           autoComplete="current-password"
+        //         />
+        //         <TextField
+        //           id="outlined-password-input"
+        //           label="Phone Number"
+        //           type="phonenumber"
+        //         />
+        //         <TextField
+        //           id="outlined-password-input"
+        //           select
+        //           label="Qualification"
+        //           type="qualification"
+        //         >
+        //           {[
+        //             { value: "bTech" },
+        //             { value: "Mtech" },
+        //             { value: "B.Ed" },
+        //             { value: "M.Ed" },
+        //           ].map((option) => (
+        //             <MenuItem key={option.value} value={option.value}>
+        //               {option.value}
+        //             </MenuItem>
+        //           ))}
+        //         </TextField>
+        //         <TextField
+        //           id="outlined-password-input"
+        //           label="Experience"
+        //           type="experience"
+        //         />
+        //         <TextField
+        //           id="outlined-password-input"
+        //           label="Year Of Join"
+        //           type="yearofjoin"
+        //         />
+        //         <TextField
+        //           id="outlined-password-input"
+        //           select
+        //           label="Subjects"
+        //           type="subjects"
+        //         >
+        //             {[
+        //             { value: "Telugu" },
+        //             { value: "Hindi" },
+        //             { value: "English" },
+        //             { value: "Maths" },
+        //             { value: "Science" },
+        //             { value: "Social" },
+        //           ].map((option) => (
+        //             <MenuItem key={option.value} value={option.value}>
+        //               {option.value}
+        //             </MenuItem>
+        //           ))}
+        //         </TextField>
+        //         <TextField
+        //           id="outlined-password-input"
+        //           select
+        //           label="Class"
+        //           type="class"
+        //         >
+        //             {[
+        //             { value: "4th Class" },
+        //             { value: "5th Class" },
+        //             { value: "6th Class" },
+        //             { value: "7th Class" },
+        //             { value: "8th Class" },
+        //             { value: "9th Class" },
+        //             { value: "10th Class" },
+        //           ].map((option) => (
+        //             <MenuItem key={option.value} value={option.value}>
+        //               {option.value}
+        //             </MenuItem>
+        //           ))}
+        //         </TextField>
+                
+        //         <Button
+        //           variant="contained"
+        //           sx={{ marginTop: 2, marginLeft: 10 }}
+        //         >
+        //           Save Updates
+        //         </Button>
+        //       </Box>
+        //     </div>
+        //   </Box>
+        // </div>
       )}
 
 
