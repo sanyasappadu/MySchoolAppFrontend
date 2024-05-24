@@ -81,11 +81,11 @@ export default function DrawerAppBar(props: Props) {
                 Blogs
               </Button>
             </Link>
-            <Link to="/signup" className="link-component">
+            {/* <Link to="/signup" className="link-component">
               <Button sx={{ color: "#fff" }}>
                 Sign Up
               </Button>
-            </Link>
+            </Link> */}
             <Link to="/login" className="link-component">
               <Button sx={{ color: "#fff" }}>
                 Log In

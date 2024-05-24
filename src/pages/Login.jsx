@@ -1,10 +1,9 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -17,13 +16,15 @@ const API_ENDPOINT = 'https://myschoolappbackend.onrender.com/api/login';
 
 const defaultTheme = createTheme();
 
-export default function Login() {
+export default function Login({ onLogin }) {
+  const navigate = useNavigate();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const userData = {
-      "email": formData.get('email'),
-      "password": formData.get('password'),
+      email: formData.get('email'),
+      password: formData.get('password'),
     };
 
     try {
@@ -36,12 +37,10 @@ export default function Login() {
       });
 
       if (response.ok) {
-        // Handle success (e.g., redirect or show success message)
-        window.location.href = `http://localhost:3000/home/${userData.email}`;
-
+        onLogin();
         console.log('User logged in successfully!');
+        navigate(`/home/${userData.email}`);
       } else {
-        // Handle error response
         console.error('Failed to log in:', response.statusText);
       }
     } catch (error) {

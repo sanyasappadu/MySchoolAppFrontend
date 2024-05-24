@@ -42,9 +42,9 @@ const UserHome = () => {
     "Vice Head Master" : ["Profile Details", "Update Profile", "Create New User", "Create Blogs", "Create Marksheet"],
     "Teacher Admin" : ["Profile Details", "Update Profile", "Create New User", "Create Blogs", "Create Marksheet"],
     "Teacher" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet"],
-    "Student Class Leader" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet"],
-    "Student Admin" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet"],
-    "Student" : ["Profile Details", "Update Profile"],
+    "Student Class Leader" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet", "Mark List"],
+    "Student Admin" : ["Profile Details", "Update Profile", "Create Blogs", "Create Marksheet", "Mark List"],
+    "Student" : ["Profile Details", "Update Profile", "Mark List"],
   }
   const [name, setName] = useState("");
   const [idnumber, setIdNumber] = useState("");
@@ -213,10 +213,10 @@ const UserHome = () => {
         console.error('Error fetching data:', error);
       }
     };
-    console.log(profileData)
+    // console.log(profileData)
     fetchBlogsData();
     fetchData();
-    console.log(profileData)
+    // console.log(profileData)
   }, []); 
   const handleListItemClick = (text) => {
     setName1(text); // Set name1 state to the corresponding role based on the text
