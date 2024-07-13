@@ -13,6 +13,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 // Define your API endpoint
 const API_ENDPOINT = 'https://myschoolappbackend.onrender.com/api/register';
+// const API_ENDPOINT = 'http://localhost:4000/api/register';
 
 const defaultTheme = createTheme();
 
@@ -47,7 +48,7 @@ export default function SignUp() {
     }
   };
 
-  return (
+  return (<div style={{marginBottom:"230px"}}>
     <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
@@ -119,5 +120,6 @@ export default function SignUp() {
         </Box>
       </Container>
     </ThemeProvider>
+    </div>
   );
 }

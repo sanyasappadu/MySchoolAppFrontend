@@ -13,6 +13,7 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 const API_ENDPOINT = 'https://myschoolappbackend.onrender.com/api/login';
+// const API_ENDPOINT = 'http://localhost:4000/api/login';
 
 const defaultTheme = createTheme();
 
@@ -48,8 +49,8 @@ export default function Login({ onLogin }) {
     }
   };
 
-  return (
-    <ThemeProvider theme={defaultTheme}>
+  return (<div style={{marginBottom:"280px"}}>
+        <ThemeProvider theme={defaultTheme}>
       <Container component="main" maxWidth="xs">
         <CssBaseline />
         <Box
@@ -111,5 +112,7 @@ export default function Login({ onLogin }) {
         </Box>
       </Container>
     </ThemeProvider>
+  </div>
+
   );
 }

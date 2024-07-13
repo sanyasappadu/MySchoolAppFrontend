@@ -5,12 +5,10 @@ import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import Drawer from '@mui/material/Drawer';
-import IconButton from '@mui/material/IconButton';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -55,39 +53,24 @@ export default function DrawerAppBar(props: Props) {
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
-    <Box sx={{ display: "flex" }}>
-      <CssBaseline />
-      <AppBar component="nav">
+    <Box sx={{ display: "flex" , height:'100px' }}>
+      <AppBar component="nav" sx={{ bgcolor: 'aliceblue', height:"100px" }}>
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: "none" } }}
-          >
-            <MenuIcon />
-          </IconButton>
           <Typography
-            variant="h6"
+            variant="h5"
             component="div"
-            sx={{ flexGrow: 1, display: { xs: "none", sm: "block" } }}
+            sx={{ flexGrow: 1, color:"black", ml:10, mt:4 }}
           >
             My English Medium School
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
             <Link to="/blogs" className="link-component">
-              <Button sx={{ color: "#fff" }}>
+              <Button sx={{ color: "black" , mt:4}}>
                 Blogs
               </Button>
             </Link>
-            {/* <Link to="/signup" className="link-component">
-              <Button sx={{ color: "#fff" }}>
-                Sign Up
-              </Button>
-            </Link> */}
             <Link to="/login" className="link-component">
-              <Button sx={{ color: "#fff" }}>
+              <Button sx={{ color: "black" , ml:10, mr:10, mt:4}}>
                 Log In
               </Button>
             </Link>

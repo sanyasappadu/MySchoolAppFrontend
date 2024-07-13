@@ -10,17 +10,10 @@ export default function Footer() {
   return (
     <Box
       component="footer"
-      sx={{
-        backgroundColor: (theme) =>
-          theme.palette.mode === "light"
-            ? theme.palette.grey[200]
-            : theme.palette.grey[800],
-        p: 6,
-        marginTop:5
-      }}
+      sx={{ bgcolor: 'aliceblue', height:"160px" }}
     >
-      <Container maxWidth="lg">
-        <Grid container spacing={5}>
+      <Container maxWidth="lg" >
+        <Grid container spacing={5} >
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               About Us
@@ -63,7 +56,7 @@ export default function Footer() {
             </Link>
           </Grid>
         </Grid>
-        <Box mt={5}>
+        {/* <Box mt={5}>
           <Typography variant="body2" color="text.secondary" align="center">
             {"Copyright © "}
             <Link color="inherit" href="https://your-website.com/">
@@ -72,7 +65,7 @@ export default function Footer() {
             {new Date().getFullYear()}
             {"."}
           </Typography>
-        </Box>
+        </Box> */}
       </Container>
     </Box>
   );

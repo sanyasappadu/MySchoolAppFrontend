@@ -1,9 +1,8 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import "./userhome.css";
 import axios from "axios";
+import MarkLists from '../components/MarkLists';
 
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
@@ -12,8 +11,8 @@ import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
-import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
+import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import TextField from '@mui/material/TextField';
@@ -24,6 +23,13 @@ import Avatar from '@mui/material/Avatar';
 import AccountCircleTwoToneIcon from '@mui/icons-material/AccountCircleTwoTone';
 import FactCheckTwoToneIcon from '@mui/icons-material/FactCheckTwoTone';
 import ManageAccountsTwoToneIcon from '@mui/icons-material/ManageAccountsTwoTone';
+import Accordion from '@mui/material/Accordion';
+import AccordionActions from '@mui/material/AccordionActions';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
+// import Button from '@mui/material/Button';
 const UserHome = () => {
   const { userEmail } = useParams();
 
@@ -57,7 +63,15 @@ const UserHome = () => {
   const [blogs, setBlogs] = useState([]);
   const [name1, setName1] = useState("Profile Details");
   // Function to fetch data from the API
-  const API_CREATEBLOG = 'https://myschoolappbackend.onrender.com/api/blog';
+  // const BACKEND = "http://localhost:4000"
+  const BACKEND = "https://myschoolappbackend.onrender.com"
+  const API_CREATEBLOG = `${BACKEND}/api/blog`;
+  
+  const [expanded, setExpanded] = React.useState(false);
+
+  const handleChangeBlog = (panel) => (event, isExpanded) => {
+    setExpanded(isExpanded ? panel : false);
+  };
 
   const handleBlogSubmit = async (event) => {
     event.preventDefault();
@@ -96,19 +110,18 @@ const UserHome = () => {
 
   const handleBlogClick = async (blogId) => {
     try {
-      const response = await fetch(`https://myschoolappbackend.onrender.com/api/blog/${blogId}`);
+      const response = await fetch(`${BACKEND}/api/blog/${blogId}`);
       if (!response.ok) {
         throw new Error('Failed to fetch blog');
       }
       const blogData = await response.json();
       console.log(blogData.data.blog)
       setSelectedBlog(blogData.data.blog); // Store the retrieved blog data in state
-      setName1("blog")
     } catch (error) {
       console.error('Error fetching blog:', error);
     }
   };
-  const API_CREATESTUDENT = 'https://myschoolappbackend.onrender.com/api/register';
+  const API_CREATESTUDENT = `${BACKEND}/api/register`;
 
   const handleCreateUser = async (event) => {
     event.preventDefault();
@@ -173,7 +186,7 @@ const UserHome = () => {
       e.preventDefault();
       try {
         const response = await axios.put(
-          `https://myschoolappbackend.onrender.com/api/updateUser/${userEmail}`,
+          `${BACKEND}/api/updateUser/${userEmail}`,
           formData
         );
         console.log("User updated successfully", response.data);
@@ -186,7 +199,7 @@ const UserHome = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://myschoolappbackend.onrender.com/api/getUser/${userEmail}`);
+        const response = await fetch(`${BACKEND}/api/getUser/${userEmail}`);
         const jsonData = await response.json();
         setUserRole(roles[jsonData.user.role])
         // console.log(jsonData);
@@ -203,7 +216,7 @@ const UserHome = () => {
     };
     const fetchBlogsData = async () => {
       try {
-        const response = await fetch('https://myschoolappbackend.onrender.com/api/blogs');
+        const response = await fetch(`${BACKEND}/api/blogs`);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -224,165 +237,96 @@ const UserHome = () => {
   };
 
   return (
-    <div style={{ display: "flex", flexDirection: "row" }}>
-      {/* <div className="sidebar">{renderFeatures()}</div> */}
+    <div style={{ display: "flex" }}>
       <div className="sidebar">
-        <Box sx={{ display: "flex", m: 2 }}>
-          {" "}
+        <Box sx={{ ml: 10, mr: 5 }}>
           <List>
-            {/* {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => ( */}
-            <ListItem disablePadding sx={{ m: 2 }}>
-              <ListItemButton>
-                <ListItemIcon>
-                  <Avatar
-                    alt="Remy Sharp"
-                    src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
-                    // sx={{ width: 56, height: 56, ml:10, mb:2 }}
-                  />
-                </ListItemIcon>
-                <ListItemText primary={name} />
-              </ListItemButton>
-            </ListItem>
+            <ListItemButton
+              disablePadding
+              sx={{ mt: 4, borderRadius: "16px", border: 1, height: "5rem" }}
+            >
+              <ListItemIcon>
+                <Avatar
+                  alt="Remy Sharp"
+                  src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
+                />
+              </ListItemIcon>
+              <ListItemText primary={name} />
+            </ListItemButton>
             {userRole.map((text, index) => (
-              <ListItem key={text} disablePadding value={index}>
-                <ListItemButton onClick={() => handleListItemClick(text)}>
-                  <ListItemIcon>
-                    {text === "Profile Details" && <AccountCircleTwoToneIcon />}
-                    {text === "Update Profile" && <ManageAccountsTwoToneIcon />}
-                    {text === "Create New User" && <ManageAccountsTwoToneIcon />}
-                    {text === "Create Blogs" && <FactCheckTwoToneIcon />}
-                    {text === "Create Marksheet" && <FactCheckTwoToneIcon />}
-                  </ListItemIcon>
-                  <ListItemText primary={text} />
-                </ListItemButton>
-              </ListItem>
+              <ListItemButton
+                key={text}
+                disablePadding
+                value={index}
+                sx={{ my: 3, borderRadius: "16px", border: 1, height: "5rem" }}
+                onClick={() => handleListItemClick(text)}
+              >
+                <ListItemIcon>
+                  {text === "Profile Details" && <AccountCircleTwoToneIcon />}
+                  {text === "Update Profile" && <ManageAccountsTwoToneIcon />}
+                  {text === "Create New User" && <ManageAccountsTwoToneIcon />}
+                  {text === "Create Blogs" && <FactCheckTwoToneIcon />}
+                  {text === "Create Marksheet" && <FactCheckTwoToneIcon />}
+                </ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItemButton>
             ))}
           </List>
         </Box>
       </div>
+
       {name1 === "Profile Details" && (
         <div className="mainsection">
-             <Card sx={{ maxWidth: "100%" , height:600, margin: 4 }}>
-      <CardMedia
-        sx={{ height: 300 , width: 300, marginLeft: "30%", marginTop: "5%" }}
-        image="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
-        title="green iguana"
-      />
-      <CardContent sx={{display: "flex", flexDirection:"row", marginLeft:"25%"}}>
-        <Typography gutterBottom variant="h3" component="div">
-          {name}
-        </Typography>
-        <Typography variant="h5" color="text.secondary" sx={{marginTop:2.5, marginLeft:2}}>
-        {qualification || clas}
-        </Typography>
-      </CardContent>
-      <Typography variant="h4" color="text.secondary" sx={{marginLeft: "26.5%"}}>
-        {role}
-        </Typography>
-        <Typography variant="h4" color="text.secondary" sx={{marginLeft: "26.5%", marginTop:2}}>
-        {idnumber}
-        </Typography>
-      {/* <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions> */}
-    </Card>
-          {/* <div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                marginTop: "20px",
-              }}
-            >
-              <img
-                className="profile-img"
-                src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
-                alt=""
+          <h1>Profile Details</h1>
+          <Card
+            sx={{
+              maxWidth: "100%",
+              height: "550px",
+              marginBottom: 4,
+              marginTop: 5,
+              display: "flex",
+              flexDirection: "row",
+            }}
+          >
+            <div style={{ width: "70%", marginLeft: 30, marginTop: 10 }}>
+              <CardContent sx={{ display: "flex", flexDirection: "column" }}>
+                <div style={{ display: "flex", marginTop: 10 }}>
+                  <Typography gutterBottom variant="h4">
+                    Name :{" "}
+                  </Typography>
+                  <Typography gutterBottom variant="h4">
+                    {name}
+                  </Typography>
+                </div>
+                <div style={{ display: "flex", marginTop: 10 }}>
+                  <Typography variant="h4">Qualification : </Typography>
+                  <Typography variant="h4">{qualification || clas}</Typography>
+                </div>
+                <div style={{ display: "flex", marginTop: 10 }}>
+                  <Typography variant="h4">Role : </Typography>
+                  <Typography variant="h4">{role}</Typography>
+                </div>
+                <div style={{ display: "flex", marginTop: 10 }}>
+                  <Typography variant="h4">Id Number : </Typography>
+                  <Typography variant="h4">{idnumber}</Typography>
+                </div>
+              </CardContent>
+            </div>
+            <div style={{ width: "30%" }}>
+              <CardMedia
+                sx={{
+                  height: 200,
+                  width: 200,
+                  marginRight: 10,
+                  marginTop: 5,
+                  borderRadius: "16px",
+                  border: 1,
+                }}
+                image="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
+                title="green iguana"
               />
-              <div style={{ marginLeft: "50px" }}>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <h3>Name : </h3>
-                  <h3 style={{ marginLeft: "10px" }}>Virat Kohli</h3>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <h3>Class : </h3>
-                  <h3 style={{ marginLeft: "10px" }}>5th</h3>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <h3> Section : </h3>
-                  <h3 style={{ marginLeft: "10px" }}>A</h3>
-                </div>
-              </div>
             </div>
-            <div>
-              <h2>Year Of Studying</h2>
-              <p>joined in this school 2018 june 16 and contiuing</p>
-            </div>
-            <div>
-              <h2>Mark sheets</h2>
-              <div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <h5>ID Number :</h5>
-                  <h5>S2017H123</h5>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <h5>Name :</h5>
-                  <h5>Virat Kohli</h5>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <h5>Class : </h5>
-                  <h5>5th</h5>
-                </div>
-                <div style={{ display: "flex", flexDirection: "row" }}>
-                  <h5>Unit Test :</h5>
-                  <h5>1st</h5>
-                </div>
-              </div>
-              <table style={{ width: "100%" }}>
-                <thead>
-                  <tr>
-                    {subjects.map((subject) => (
-                      <th key={subject.name} style={{ textAlign: "start" }}>
-                        {subject.name}
-                      </th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    {subjects.map((subject) => (
-                      <td key={subject.name} style={{ textAlign: "start" }}>
-                        {subject.marks}
-                      </td>
-                    ))}
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div> */}
-        </div>
-      )}
-      {name1 === "blog" && (
-        <div className="mainsection">
-          <h1 style={{marginLeft:"10%"}}>BLOG DETAILS</h1>
-          {/* Render other blog details as needed */}
-          <Card sx={{ maxWidth: 600, marginTop: 2}} key={selectedBlog.id}>
-             <CardMedia
-               component="img"
-               alt="green iguana"
-               height="140"
-               image={selectedBlog.referenceLink}
-             />
-             <CardContent>
-               <Typography gutterBottom variant="h5" component="div">{selectedBlog.heading}</Typography>
-               <Typography variant="body2" color="text.secondary">{selectedBlog.description}</Typography>
-             </CardContent>
-             <CardActions>
-               <Button size="small">{selectedBlog.name}</Button>
-               <Button size="small">{selectedBlog.idnumber}</Button>
-             </CardActions>
-           </Card>
+          </Card>
         </div>
       )}
 
@@ -395,8 +339,8 @@ const UserHome = () => {
             onSubmit={handleBlogSubmit}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
+            <Grid container spacing={5}>
+              <Grid item xs={5}>
                 <TextField
                   autoComplete="given-name"
                   name="idnumber"
@@ -407,7 +351,7 @@ const UserHome = () => {
                   autoFocus
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -417,7 +361,7 @@ const UserHome = () => {
                   autoComplete="name"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -428,7 +372,7 @@ const UserHome = () => {
                   autoComplete="new-heading"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -439,7 +383,7 @@ const UserHome = () => {
                   autoComplete="new-relatedLinks"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -450,12 +394,13 @@ const UserHome = () => {
                   autoComplete="new-role"
                 />
               </Grid>
-              <Grid item xs={12}>
+             
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
                   multiline
-                  rows={4}
+                  // rows={4}
                   name="description"
                   label="DESCRIPTION"
                   type="description"
@@ -463,12 +408,12 @@ const UserHome = () => {
                   autoComplete="new-description"
                 />
               </Grid>
-              <Grid item xs={12}>
+              <Grid item xs={5}>
                 <TextField
                   fullWidth
                   required
                   multiline
-                  rows={6}
+                  // rows={6}
                   name="briefDescription"
                   label="BRIEF DESCRIPTION"
                   type="briefDescription"
@@ -476,24 +421,30 @@ const UserHome = () => {
                   autoComplete="new-briefDescription"
                 />
               </Grid>
-            </Grid>
-            <Button
+              <Grid item xs={5}>
+              <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ my: 1.5 }}
             >
               SAVE BLOG
             </Button>
+              </Grid>
+            </Grid>
+            
           </Box>
         </div>
       )}
+
       {name1 === "Create Marksheet" && (
         <div className="mainsection">
           <h1>Announce The Exam Marks</h1>
           {/* <TableComponent /> */}
+          <MarkLists />
         </div>
       )}
+
       {name1 === "Create New User" && (
         <div className="mainsection">
           <h1>Create New User Account</h1>
@@ -503,8 +454,8 @@ const UserHome = () => {
             onSubmit={handleCreateUser}
             sx={{ mt: 3 }}
           >
-            <Grid container spacing={2}>
-              <Grid item xs={6}>
+            <Grid container spacing={5}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -514,7 +465,7 @@ const UserHome = () => {
                   autoComplete="name"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -525,7 +476,7 @@ const UserHome = () => {
                   autoComplete="new-email"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -536,7 +487,7 @@ const UserHome = () => {
                   autoComplete="new-gender"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -547,7 +498,7 @@ const UserHome = () => {
                   autoComplete="new-role"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -558,7 +509,7 @@ const UserHome = () => {
                   autoComplete="new-class"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -569,7 +520,7 @@ const UserHome = () => {
                   autoComplete="new-password"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -580,7 +531,7 @@ const UserHome = () => {
                   autoComplete="new-qualification"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -591,7 +542,7 @@ const UserHome = () => {
                   autoComplete="new-subjects"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -602,7 +553,7 @@ const UserHome = () => {
                   autoComplete="new-experience"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -613,7 +564,7 @@ const UserHome = () => {
                   autoComplete="new-yearOfJoin"
                 />
               </Grid>
-              <Grid item xs={6}>
+              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -624,26 +575,30 @@ const UserHome = () => {
                   autoComplete="new-salaryDetails"
                 />
               </Grid>
-            </Grid>
-            <Button
+              <Grid item xs={5}>
+              <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ my: 1.5}}
             >
               SAVE STUDENT
             </Button>
+              </Grid>
+            </Grid>
+            
           </Box>
         </div>
       )}
+
       {name1 === "Update Profile" && (
-          <div className="mainsection">
+        <div className="mainsection">
           <h1>Update User Information</h1>
           <Box
             component="form"
             onSubmit={handleSubmit}
             sx={{
-              "& .MuiTextField-root": { m: 1, width: "25ch" },
+              "& .MuiTextField-root": { m: 2, width: "25ch" },
             }}
             noValidate
             autoComplete="off"
@@ -773,195 +728,42 @@ const UserHome = () => {
               ))}
             </TextField>
             <Button
-              variant="contained"
+              // variant="contained"
+              // type="submit"
+              // sx={{ marginTop: 2, marginLeft: 10 }}
               type="submit"
-              sx={{ marginTop: 2, marginLeft: 10 }}
+              // fullWidth
+              variant="contained"
+              sx={{ my: 3, mx:5 ,width: "25ch"} }
             >
               Save Updates
             </Button>
           </Box>
         </div>
-        // <div className="mainsection">
-        //   <h1>Create New Teacher Account</h1>
-        //   <Box
-        //     component="form"
-        //     sx={{
-        //       "& .MuiTextField-root": { m: 1, width: "25ch" },
-        //     }}
-        //     noValidate
-        //     autoComplete="off"
-        //   >
-        //     <div>
-        //       <Box
-        //         component="form"
-        //         sx={{
-        //           "& .MuiTextField-root": { m: 1, width: "25ch" },
-        //         }}
-        //         noValidate
-        //         autoComplete="off"
-        //       >
-        //         <TextField
-        //           id="outlined-password-input"
-        //           label="Name"
-        //           type="name"
-        //         />
-        //         <TextField
-        //           id="outlined-password-input"
-        //           select
-        //           label="Gender"
-        //           type="gender"
-        //         >
-        //           {[
-        //             { value: "Male" },
-        //             { value: "Female" },
-        //             { value: "Others" },
-        //           ].map((option) => (
-        //             <MenuItem key={option.value} value={option.value}>
-        //               {option.value}
-        //             </MenuItem>
-        //           ))}
-        //         </TextField>
-        //         <TextField
-        //           id="outlined-password-input"
-        //           select
-        //           label="Role"
-        //           type="role"
-        //         >
-        //           {[
-        //             { value: "Head Master" },
-        //             { value: "Vice Head Master" },
-        //             { value: "Teacher Admin" },
-        //             { value: "Teacher" },
-        //             { value: "Student Admin" },
-        //             { value: "Student Class Leader" },
-        //             { value: "Student" },
-        //           ].map((option) => (
-        //             <MenuItem key={option.value} value={option.value}>
-        //               {option.value}
-        //             </MenuItem>
-        //           ))}
-        //         </TextField>
-        //         <TextField
-        //           id="outlined-password-input"
-        //           label="Email"
-        //           type="email"
-        //         />
-        //         <TextField
-        //           id="outlined-password-input"
-        //           label="Password"
-        //           type="password"
-        //           autoComplete="current-password"
-        //         />
-        //         <TextField
-        //           id="outlined-password-input"
-        //           label="Phone Number"
-        //           type="phonenumber"
-        //         />
-        //         <TextField
-        //           id="outlined-password-input"
-        //           select
-        //           label="Qualification"
-        //           type="qualification"
-        //         >
-        //           {[
-        //             { value: "bTech" },
-        //             { value: "Mtech" },
-        //             { value: "B.Ed" },
-        //             { value: "M.Ed" },
-        //           ].map((option) => (
-        //             <MenuItem key={option.value} value={option.value}>
-        //               {option.value}
-        //             </MenuItem>
-        //           ))}
-        //         </TextField>
-        //         <TextField
-        //           id="outlined-password-input"
-        //           label="Experience"
-        //           type="experience"
-        //         />
-        //         <TextField
-        //           id="outlined-password-input"
-        //           label="Year Of Join"
-        //           type="yearofjoin"
-        //         />
-        //         <TextField
-        //           id="outlined-password-input"
-        //           select
-        //           label="Subjects"
-        //           type="subjects"
-        //         >
-        //             {[
-        //             { value: "Telugu" },
-        //             { value: "Hindi" },
-        //             { value: "English" },
-        //             { value: "Maths" },
-        //             { value: "Science" },
-        //             { value: "Social" },
-        //           ].map((option) => (
-        //             <MenuItem key={option.value} value={option.value}>
-        //               {option.value}
-        //             </MenuItem>
-        //           ))}
-        //         </TextField>
-        //         <TextField
-        //           id="outlined-password-input"
-        //           select
-        //           label="Class"
-        //           type="class"
-        //         >
-        //             {[
-        //             { value: "4th Class" },
-        //             { value: "5th Class" },
-        //             { value: "6th Class" },
-        //             { value: "7th Class" },
-        //             { value: "8th Class" },
-        //             { value: "9th Class" },
-        //             { value: "10th Class" },
-        //           ].map((option) => (
-        //             <MenuItem key={option.value} value={option.value}>
-        //               {option.value}
-        //             </MenuItem>
-        //           ))}
-        //         </TextField>
-                
-        //         <Button
-        //           variant="contained"
-        //           sx={{ marginTop: 2, marginLeft: 10 }}
-        //         >
-        //           Save Updates
-        //         </Button>
-        //       </Box>
-        //     </div>
-        //   </Box>
-        // </div>
       )}
 
-
       <div className="blogsection">
+        <h1>BLOGS</h1>
         {blogs.map((blog) => (
-          <ListItem alignItems="flex-start"
-          key={blog._id}
-          // onClick={() => handleBlogClick()}
-          onClick={() => handleBlogClick(blog._id)}
-          >
-            <ListItemText
-              primary={blog.heading}
-              secondary={
-                <React.Fragment>
-                  <Typography
-                    sx={{ display: "inline" }}
-                    component="span"
-                    variant="body2"
-                    color="text.primary"
-                  >
-                    {blog.name}
-                  </Typography>
-                  {blog.description}
-                </React.Fragment>
-              }
-            />
-          </ListItem>
+          <Accordion expanded={expanded === `${blog._id}`} onChange={handleChangeBlog(blog._id)} sx={{my:5}}>
+        <AccordionSummary
+          expandIcon={<ExpandMoreIcon />}
+          aria-controls="panel1bh-content"
+          id="panel1bh-header"
+        >
+          <Typography sx={{ width: '33%', flexShrink: 0 }}>
+          {blog.heading}
+          </Typography>
+          <Typography sx={{ color: 'text.secondary' }}>{blog.idnumber}</Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Typography>
+           {blog.description}
+          </Typography>
+        </AccordionDetails>
+      </Accordion>
         ))}
+
       </div>
     </div>
   );

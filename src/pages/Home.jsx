@@ -14,10 +14,10 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 const itemData = [
   {
-    img: "https://png.pngtree.com/thumb_back/fh260/back_pic/05/09/43/985984b912a8c46.jpg",
+    img: "https://thumbs.dreamstime.com/z/back-to-school-sale-advertising-banner-learn-study-design-template-supplies-vector-illustration-282184334.jpg?w=992",
   },
   {
-    img: "https://static.vecteezy.com/system/resources/thumbnails/007/937/497/small/educational-logic-toys-for-montessori-games-creative-banner-landing-page-for-a-website-in-a-flat-style-montessori-school-sensory-education-with-the-help-of-didactic-classes-vector.jpg",
+    img: "https://trbahadurpur.com/wp-content/uploads/2024/01/SCHOOL-BANNER-02-1.jpg",
   },
   {
     img: "https://images.twinkl.co.uk/tw1n/image/private/t_630_eco/image_repo/e8/b7/t-t-13023-sports-day-display-banner_ver_1.jpg",
@@ -29,13 +29,13 @@ const itemData = [
 
 function Home() {
   return (
-    <div>
-      <Box sx={{ width: "80%" , m:"8%"}}>
+    <div style={{marginBottom:"50px"}}>
+      <Box sx={{ width: "80%" , ml:"8%"}}>
         <Grid container rowSpacing={5} columnSpacing={10}>
           {itemData.map((item) => (
             <Grid item xs={6}>
               <Item>
-              <ImageListItem key={item.img}>
+              <ImageListItem key={item.img}>``
                 <img
                   srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                   src={`${item.img}?w=164&h=164&fit=crop&auto=format`}

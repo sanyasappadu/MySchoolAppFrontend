@@ -14,6 +14,8 @@ export default function ImgMediaCard() {
       try {
         const response = await fetch(
           "https://myschoolappbackend.onrender.com/api/blogs"
+          // "http://localhost:4000/api/blogs"
+
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
