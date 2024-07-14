@@ -277,7 +277,7 @@ const UserHome = () => {
 
       {name1 === "Profile Details" && (
         <div className="mainsection">
-          <h1>Profile Details</h1>
+          <h1 style={{marginLeft:"30%"}}>Profile Details</h1>
           <Card
             sx={{
               maxWidth: "100%",
@@ -286,33 +286,31 @@ const UserHome = () => {
               marginTop: 5,
               display: "flex",
               flexDirection: "row",
+              borderRadius: "16px",
+              border: 1,
             }}
           >
-            <div style={{ width: "70%", marginLeft: 30, marginTop: 10 }}>
+            <div style={{ width: "60%", marginLeft: 30, marginTop: 10 }}>
               <CardContent sx={{ display: "flex", flexDirection: "column" }}>
-                <div style={{ display: "flex", marginTop: 10 }}>
-                  <Typography gutterBottom variant="h4">
-                    Name :{" "}
-                  </Typography>
-                  <Typography gutterBottom variant="h4">
-                    {name}
-                  </Typography>
+                <div style={{ display: "flex", marginTop: "4vh", marginLeft: "3vw" }}>
+                  <h3  >Name :</h3>
+                  <h3  >{name}</h3>
                 </div>
-                <div style={{ display: "flex", marginTop: 10 }}>
-                  <Typography variant="h4">Qualification : </Typography>
-                  <Typography variant="h4">{qualification || clas}</Typography>
+                <div style={{ display: "flex", marginTop: "1vh" ,marginLeft: "3vw"}}>
+                  <h3 >Qualification : </h3>
+                  <h3 >{qualification || clas}</h3>
                 </div>
-                <div style={{ display: "flex", marginTop: 10 }}>
-                  <Typography variant="h4">Role : </Typography>
-                  <Typography variant="h4">{role}</Typography>
+                <div style={{ display: "flex", marginTop: "1vh" ,marginLeft: "3vw"}}>
+                  <h3 >Role : </h3>
+                  <h3 >{role}</h3>
                 </div>
-                <div style={{ display: "flex", marginTop: 10 }}>
-                  <Typography variant="h4">Id Number : </Typography>
-                  <Typography variant="h4">{idnumber}</Typography>
+                <div style={{ display: "flex", marginTop: "1vh" ,marginLeft: "3vw"}}>
+                  <h3 >Id Number : </h3>
+                  <h3 > {idnumber}</h3>
                 </div>
               </CardContent>
             </div>
-            <div style={{ width: "30%" }}>
+            <div style={{ width: "40%" , marginTop:"4vh"}}>
               <CardMedia
                 sx={{
                   height: 200,
@@ -332,15 +330,16 @@ const UserHome = () => {
 
       {name1 === "Create Blogs" && (
         <div className="mainsection">
-          <h1>Create blogs</h1>
+          <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>Create blogs</h1>
+          <Grid sx={{borderRadius: "16px", border: 1, height:"60vh"}}>
+
           <Box
             component="form"
             noValidate
             onSubmit={handleBlogSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={5}>
-              <Grid item xs={5}>
+            sx={{
+              "& .MuiTextField-root": {ml:4, mt:6, width: "25ch",  },
+            }} >
                 <TextField
                   autoComplete="given-name"
                   name="idnumber"
@@ -350,8 +349,6 @@ const UserHome = () => {
                   label="ID NUMBER"
                   autoFocus
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -360,8 +357,6 @@ const UserHome = () => {
                   name="name"
                   autoComplete="name"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -371,8 +366,6 @@ const UserHome = () => {
                   id="heading"
                   autoComplete="new-heading"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -382,8 +375,6 @@ const UserHome = () => {
                   id="relatedLinks"
                   autoComplete="new-relatedLinks"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -393,9 +384,7 @@ const UserHome = () => {
                   id="role"
                   autoComplete="new-role"
                 />
-              </Grid>
-             
-              <Grid item xs={5}>
+              
                 <TextField
                   required
                   fullWidth
@@ -407,8 +396,6 @@ const UserHome = () => {
                   id="description"
                   autoComplete="new-description"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   fullWidth
                   required
@@ -420,26 +407,23 @@ const UserHome = () => {
                   id="briefDescription"
                   autoComplete="new-briefDescription"
                 />
-              </Grid>
-              <Grid item xs={5}>
               <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ my: 1.5 }}
+              sx={{ my: 7, mx:7 ,width: "25ch"} }
             >
               SAVE BLOG
             </Button>
-              </Grid>
-            </Grid>
             
           </Box>
+          </Grid>
         </div>
       )}
 
       {name1 === "Create Marksheet" && (
         <div className="mainsection">
-          <h1>Announce The Exam Marks</h1>
+          <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>Announce The Exam Marks</h1>
           {/* <TableComponent /> */}
           <MarkLists />
         </div>
@@ -447,15 +431,17 @@ const UserHome = () => {
 
       {name1 === "Create New User" && (
         <div className="mainsection">
-          <h1>Create New User Account</h1>
+          <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>Create New User Account</h1>
+          <Grid sx={{borderRadius: "16px", border: 1, height:"60vh"}}>
+
           <Box
             component="form"
             noValidate
             onSubmit={handleCreateUser}
-            sx={{ mt: 3 }}
+            sx={{
+              "& .MuiTextField-root": {ml:4, mt:6, width: "25ch",  },
+            }}
           >
-            <Grid container spacing={5}>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -464,8 +450,6 @@ const UserHome = () => {
                   name="name"
                   autoComplete="name"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -475,8 +459,6 @@ const UserHome = () => {
                   id="email"
                   autoComplete="new-email"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -486,8 +468,6 @@ const UserHome = () => {
                   id="gender"
                   autoComplete="new-gender"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -497,8 +477,6 @@ const UserHome = () => {
                   id="role"
                   autoComplete="new-role"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -508,8 +486,6 @@ const UserHome = () => {
                   id="class"
                   autoComplete="new-class"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -519,8 +495,6 @@ const UserHome = () => {
                   id="password"
                   autoComplete="new-password"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -530,8 +504,6 @@ const UserHome = () => {
                   id="qualification"
                   autoComplete="new-qualification"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -541,8 +513,6 @@ const UserHome = () => {
                   id="subjects"
                   autoComplete="new-subjects"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -552,8 +522,6 @@ const UserHome = () => {
                   id="experience"
                   autoComplete="new-experience"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
                   required
                   fullWidth
@@ -563,10 +531,8 @@ const UserHome = () => {
                   id="yearOfJoin"
                   autoComplete="new-yearOfJoin"
                 />
-              </Grid>
-              <Grid item xs={5}>
                 <TextField
-                  required
+                  required 
                   fullWidth
                   name="salaryDetails"
                   label="salaryDetails"
@@ -574,31 +540,28 @@ const UserHome = () => {
                   id="salaryDetails"
                   autoComplete="new-salaryDetails"
                 />
-              </Grid>
-              <Grid item xs={5}>
               <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ my: 1.5}}
+              sx={{ my: 7, mx:7 ,width: "25ch"} }
             >
               SAVE STUDENT
             </Button>
-              </Grid>
-            </Grid>
-            
           </Box>
+          </Grid>
         </div>
       )}
 
       {name1 === "Update Profile" && (
         <div className="mainsection">
-          <h1>Update User Information</h1>
+          <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>Update User Information</h1>
+          <Grid sx={{borderRadius: "16px", border: 1, height:"60vh"}}>
           <Box
             component="form"
             onSubmit={handleSubmit}
             sx={{
-              "& .MuiTextField-root": { m: 2, width: "25ch" },
+              "& .MuiTextField-root": {ml:4, mt:6, width: "25ch",  },
             }}
             noValidate
             autoComplete="off"
@@ -728,24 +691,22 @@ const UserHome = () => {
               ))}
             </TextField>
             <Button
-              // variant="contained"
-              // type="submit"
-              // sx={{ marginTop: 2, marginLeft: 10 }}
               type="submit"
               // fullWidth
               variant="contained"
-              sx={{ my: 3, mx:5 ,width: "25ch"} }
+              sx={{ my: 7, mx:7 ,width: "25ch"} }
             >
               Save Updates
             </Button>
           </Box>
+          </Grid>
         </div>
       )}
 
       <div className="blogsection">
-        <h1>BLOGS</h1>
+        <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>BLOGS</h1>
         {blogs.map((blog) => (
-          <Accordion expanded={expanded === `${blog._id}`} onChange={handleChangeBlog(blog._id)} sx={{my:5}}>
+          <Accordion expanded={expanded === `${blog._id}`} onChange={handleChangeBlog(blog._id)} sx={{my:5, mx:2}}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1bh-content"

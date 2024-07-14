@@ -7,6 +7,10 @@ import UserHome from './pages/UserHome';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
 import Blogs from './pages/Blogs';
+import LeaveForm from './components/LeaveForm';
+import GamesForm from './components/GamesForm';
+import AdmissionForm from './components/AdmissionForm';
+import ComplaintForm from './components/ComplaintForm';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,6 +24,11 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/leaveform" element={<LeaveForm/>} />
+        <Route path="/gamesform" element={<GamesForm/>} />
+        <Route path="/complaintform" element={<ComplaintForm/>} />
+        <Route path="/admissionform" element={<AdmissionForm/>} />
+
         <Route path="/home/:userEmail" element={<UserHome />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={isAuthenticated ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />

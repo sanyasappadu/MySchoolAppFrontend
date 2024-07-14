@@ -41,7 +41,7 @@ export default function AccordionUsage() {
 
   return (
     <div style={{width:"95%"}}>
-      <Accordion>
+      <Accordion >
         <AccordionSummary
           expandIcon={<ExpandMoreIcon />}
           aria-controls="panel1-content"

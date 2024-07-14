@@ -64,16 +64,16 @@ export default function DrawerAppBar(props: Props) {
             My English Medium School
           </Typography>
           <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            <Link to="/blogs" className="link-component">
+            {/* <Link to="/blogs" className="link-component">
               <Button sx={{ color: "black" , mt:4}}>
                 Blogs
               </Button>
-            </Link>
-            <Link to="/login" className="link-component">
+            </Link> */}
+            {/* <Link to="/login" className="link-component">
               <Button sx={{ color: "black" , ml:10, mr:10, mt:4}}>
                 Log In
               </Button>
-            </Link>
+            </Link> */}
           </Box>
         </Toolbar>
       </AppBar>
