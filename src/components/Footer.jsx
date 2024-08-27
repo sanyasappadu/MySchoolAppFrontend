@@ -10,10 +10,10 @@ export default function Footer() {
   return (
     <Box
       component="footer"
-      sx={{ bgcolor: 'aliceblue', height:"160px" }}
+      sx={{ bgcolor: 'aliceblue', height:"160px",display: 'sticky', bottom: '0px', left: '0px', right: '0px', py: '10px' }}
     >
-      <Container maxWidth="lg" >
-        <Grid container spacing={5} >
+      <Container maxWidth="lg" sx={{ display: 'flex', alignItems: 'center', height: '100%'}}>
+        <Grid container spacisx={{ justifyContent: 'center' }}ng={5} >
           <Grid item xs={12} sm={4}>
             <Typography variant="h6" color="text.primary" gutterBottom>
               About Us

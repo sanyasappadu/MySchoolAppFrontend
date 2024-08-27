@@ -1,13 +1,21 @@
-import React from 'react'
-import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
+import * as React from 'react';
+import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import NoteAddIcon from '@mui/icons-material/NoteAdd';
+import Typography from '@mui/material/Typography';
+import Container from '@mui/material/Container';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+const API = "https://myschoolappbackend.onrender.com/api/complaints";
+// const API = 'http://localhost:4000/api/complaints';
 
-function Form() {
-  const API = "https://myschoolappbackend.onrender.com/api/complaints";
-  const handleBlogSubmit = async (event) => {
+const defaultTheme = createTheme();
+
+export default function Form() {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const userData = {
@@ -15,6 +23,7 @@ function Form() {
       "class": formData.get('class'),
       "idnumber": formData.get('idnumber'),
       "description": formData.get('description'),
+
     };
     console.log(userData)
     try {
@@ -28,90 +37,96 @@ function Form() {
 
       if (response.ok) {
         // Handle success (e.g., redirect or show success message)
-        console.log('Blog saved successfully!');
+        console.log('complaints saved successfully!');
       } else {
         // Handle error response
-        console.error('Blog not saved !:', response.statusText);
+        console.error('complaints not saved !:', response.statusText);
       }
     } catch (error) {
       console.error('Error:', error.message);
     }
   };
-  
-  return (
-    <div>
-      <h1 style={{marginLeft:"40%"}}>Complaint Form</h1>
-      <Box
-            component="form"
-            noValidate
-            onSubmit={handleBlogSubmit}
-            sx={{ ml:"25%",  mb:15, borderRadius: "16px", border: 1, width: 1/2 , height:450, }}
-            
-          >
-            <Grid container spacing={3} sx={{flexDirection: 'column', ml:25, mt:3}} >
-             
-              <Grid item xs={5}>
-                <TextField
-                  autoComplete="given-name"
-                  name="idnumber"
-                  required
-                  fullWidth
-                  id="idnumber"
-                  label="ID NUMBER"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={5}>
 
-                <TextField
-                  required
-                  // sx={{width:"120%"}}
-                  fullWidth
-                  id="name"
-                  label="NAME"
-                  name="name"
-                  autoComplete="name"
-                />
-              </Grid>
-              <Grid item xs={5}>
-                <TextField
-                  autoComplete="given-name"
-                  name="class"
-                  required
-                  fullWidth
-                  id="class"
-                  label="Class"
-                  autoFocus
-                />
-              </Grid>
-              <Grid item xs={5}>
-                <TextField
-                  required
-                  fullWidth
-                  multiline
-                  // rows={4}
-                  name="description"
-                  label="Description"
-                  type=""
-                  id="description"
-                  autoComplete="description"
-                />
-              </Grid>
-              <Grid item xs={5}>
-              <Button
+  return (<div style={{marginBottom:"280px"}}>
+        <ThemeProvider theme={defaultTheme}>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 8,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+          }}
+        >
+          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
+            <NoteAddIcon />
+          </Avatar>
+          <Typography component="h1" variant="h5">
+            Complaints Form
+          </Typography>
+          </Box>
+          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="name"
+              label="Name"
+              name="name"
+              autoComplete="name"
+              autoFocus
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="idnumber"
+              label="Id Number"
+              type="idnumber"
+              id="idnumber"
+              autoComplete="current-idnumber"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="class"
+              label="class"
+              type="class"
+              id="class"
+              autoComplete="current-class"
+            />
+             <TextField
+              margin="normal"
+              required
+              fullWidth
+              name="description"
+              label="Description"
+              type="description"
+              id="description"
+              autoComplete="current-description"
+            />
+            <Button
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ my: 1.5 }}
+              sx={{ mt: 3, mb: 2 }}
             >
               Save Complaint
             </Button>
-              </Grid>
-            </Grid>
-            
           </Box>
-    </div>
-  )
-}
+        </Box>
+      </Container>
+    </ThemeProvider>
+  </div>
 
-export default Form
+  );
+}

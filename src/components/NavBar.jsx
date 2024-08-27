@@ -12,6 +12,9 @@ import ListItemText from '@mui/material/ListItemText';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import { useAuth } from '../context/AuthConext';
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import Avatar from '@mui/material/Avatar';
 
 interface Props {
   /**
@@ -25,9 +28,12 @@ const drawerWidth = 240;
 const navItems = ['Home', 'About', 'Contact'];
 
 export default function DrawerAppBar(props: Props) {
+  const { user } = useAuth();
+  const { logout } = useAuth();
+  console.log(user)
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
-
+  
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -38,7 +44,7 @@ export default function DrawerAppBar(props: Props) {
         MUI
       </Typography>
       <Divider />
-      <List>
+      <List >
         {navItems.map((item) => (
           <ListItem key={item} disablePadding>
             <ListItemButton sx={{ textAlign: 'center' }}>
@@ -49,31 +55,40 @@ export default function DrawerAppBar(props: Props) {
       </List>
     </Box>
   );
-
+  function handleLogout(){
+    logout()
+  }
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (
     <Box sx={{ display: "flex" , height:'100px' }}>
-      <AppBar component="nav" sx={{ bgcolor: 'aliceblue', height:"100px" }}>
-        <Toolbar>
+      <AppBar component="nav" sx={{ bgcolor: 'aliceblue', height:"100px" , display: 'flex', justifyContent: 'center', pr: 5}}>
+        <Toolbar sx={{display: 'flex', width: '100%', justifyContent: 'space-between'}}>
+      
+          <Avatar sx={{ bgcolor: 'primary.main',ml: 10, display: { md: 'none'} }}>
+            <CorporateFareIcon />
+          </Avatar>
           <Typography
             variant="h5"
             component="div"
-            sx={{ flexGrow: 1, color:"black", ml:10, mt:4 }}
+            sx={{ flexGrow: 1, color:"black", ml:10, display: { xs: 'none', md: 'block'} }}
           >
             My English Medium School
+            
           </Typography>
-          <Box sx={{ display: { xs: "none", sm: "block" } }}>
-            {/* <Link to="/blogs" className="link-component">
-              <Button sx={{ color: "black" , mt:4}}>
-                Blogs
+
+          <Box sx={{ display: 'flex',height: '100%', alignItems: 'center', justifyContent: 'center' }}>
+            <Link to="/forms" className="link-component">
+              <Button sx={{ color: "black" }}>
+                Forms
               </Button>
-            </Link> */}
-            {/* <Link to="/login" className="link-component">
-              <Button sx={{ color: "black" , ml:10, mr:10, mt:4}}>
-                Log In
+            </Link>
+            <Link to="/" className="link-component">
+              <Button sx={{ color: "black" , ml:5, mr:5,}}>
+                home
               </Button>
-            </Link> */}
+            </Link>
+            <Button onClick={handleLogout}>Logout</Button>
           </Box>
         </Toolbar>
       </AppBar>

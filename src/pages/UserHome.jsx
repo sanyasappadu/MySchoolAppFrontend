@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useParams } from "react-router-dom";
 import "./userhome.css";
@@ -237,13 +238,14 @@ const UserHome = () => {
   };
 
   return (
-    <div style={{ display: "flex" }}>
-      <div className="sidebar">
-        <Box sx={{ ml: 10, mr: 5 }}>
-          <List>
+    <Box sx={{  px: '10px'       
+      ,display: 'flex', gap: '10px', flexDirection: {xs: 'column', sm: 'column', lg: 'row'}, width: '100%', justifyContent: 'center'}}>
+      <div className="">
+        <Box sx={{ ml: 0, mr: 0, width: '100%' ,pt: '50px'}}>
+          <List sx={{display: {xs: 'flex', lg: 'block'}, gap: {xs: '5px'}, alignItems: 'center' , justifyContent: 'center', height: '100%'}}>
             <ListItemButton
-              disablePadding
-              sx={{ mt: 4, borderRadius: "16px", border: 1, height: "5rem" }}
+              
+              sx={{ my:3, borderRadius: "16px", border: 1, hieght: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
             >
               <ListItemIcon>
                 <Avatar
@@ -251,14 +253,13 @@ const UserHome = () => {
                   src="https://encrypted-tbn2.gstatic.com/licensed-image?q=tbn:ANd9GcQRt_0WRr8Mc016RGaTK8eaiv6dSHKuNjIwdUrnF_7Xa_GdQL9YX9f4le5qucuyVUpKxbo7gqIGC0pZo14"
                 />
               </ListItemIcon>
-              <ListItemText primary={name} />
+              <ListItemText primary={name} sx={{display: { xs: 'none', md: 'block'}}}/>
             </ListItemButton>
             {userRole.map((text, index) => (
               <ListItemButton
                 key={text}
-                disablePadding
                 value={index}
-                sx={{ my: 3, borderRadius: "16px", border: 1, height: "5rem" }}
+                sx={{ my: 3, borderRadius: "16px", border: 1, height: "4rem", display: 'flex', justifyContent: 'center'}}
                 onClick={() => handleListItemClick(text)}
               >
                 <ListItemIcon>
@@ -268,7 +269,7 @@ const UserHome = () => {
                   {text === "Create Blogs" && <FactCheckTwoToneIcon />}
                   {text === "Create Marksheet" && <FactCheckTwoToneIcon />}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={text} sx={{display: { xs: 'none', md: 'block'}}}/>
               </ListItemButton>
             ))}
           </List>
@@ -276,21 +277,24 @@ const UserHome = () => {
       </div>
 
       {name1 === "Profile Details" && (
-        <div className="mainsection">
+        <div className="">
           <h1 style={{marginLeft:"30%"}}>Profile Details</h1>
           <Card
             sx={{
-              maxWidth: "100%",
+              width: "100%",
               height: "550px",
               marginBottom: 4,
               marginTop: 5,
               display: "flex",
-              flexDirection: "row",
+
+              flexDirection: { xs: 'column-reverse', sm: 'row'},
               borderRadius: "16px",
               border: 1,
+              justifyContent: 'space-around',
+              alignItems: 'center'
             }}
           >
-            <div style={{ width: "60%", marginLeft: 30, marginTop: 10 }}>
+            <div style={{}}>
               <CardContent sx={{ display: "flex", flexDirection: "column" }}>
                 <div style={{ display: "flex", marginTop: "4vh", marginLeft: "3vw" }}>
                   <h3  >Name :</h3>
@@ -310,7 +314,7 @@ const UserHome = () => {
                 </div>
               </CardContent>
             </div>
-            <div style={{ width: "40%" , marginTop:"4vh"}}>
+            <div style={{ marginTop:"4vh"}}>
               <CardMedia
                 sx={{
                   height: 200,
@@ -726,9 +730,8 @@ const UserHome = () => {
         ))}
 
       </div>
-    </div>
+    </Box>
   );
 };
 
 export default UserHome;
-
