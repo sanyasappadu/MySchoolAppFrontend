@@ -72,12 +72,12 @@ export default function DrawerAppBar(props: Props) {
             variant="h5"
             component="div"
             sx={{ flexGrow: 1, color:"black", ml:10, display: { xs: 'none', md: 'block'} }}
-          >
-            My English Medium School
+          ><Link to="/home/:${user.email}">My English Medium School</Link>
+            
             
           </Typography>
 
-            {user&& <h1 >hii</h1>}
+            {user&& <h1 >{}</h1>}
           <Box sx={{ display: 'flex',height: '100%', alignItems: 'center', justifyContent: 'center' }}>
             <Link to="/forms" className="link-component">
               <Button sx={{ color: "black" }}>
@@ -89,8 +89,11 @@ export default function DrawerAppBar(props: Props) {
                 home
               </Button>
             </Link>
-            {!user && <Button onClick={handleLogout}>Logout</Button>}
-            
+            {user && <Button onClick={handleLogout}>Logout</Button>}
+           {!user && <Link to="/login" >
+           <Button>LogIn</Button>
+           </Link>}
+
           </Box>
         </Toolbar>
       </AppBar>
