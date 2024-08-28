@@ -77,6 +77,7 @@ export default function DrawerAppBar(props: Props) {
             
           </Typography>
 
+            {user&& <h1 >hii</h1>}
           <Box sx={{ display: 'flex',height: '100%', alignItems: 'center', justifyContent: 'center' }}>
             <Link to="/forms" className="link-component">
               <Button sx={{ color: "black" }}>
@@ -88,7 +89,8 @@ export default function DrawerAppBar(props: Props) {
                 home
               </Button>
             </Link>
-            <Button onClick={handleLogout}>Logout</Button>
+            {!user && <Button onClick={handleLogout}>Logout</Button>}
+            
           </Box>
         </Toolbar>
       </AppBar>

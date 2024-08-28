@@ -237,12 +237,12 @@ const UserHome = () => {
     console.log(text)
   };
 
-  return (
+  return (<div>
     <Box sx={{  px: '10px'       
       ,display: 'flex', gap: '10px', flexDirection: {xs: 'column', sm: 'column', lg: 'row'}, width: '100%', justifyContent: 'center'}}>
-      <div className="">
-        <Box sx={{ ml: 0, mr: 0, width: '100%' ,pt: '50px'}}>
-          <List sx={{display: {xs: 'flex', lg: 'block'}, gap: {xs: '5px'}, alignItems: 'center' , justifyContent: 'center', height: '100%'}}>
+ 
+        <Box sx={{ ml: 0, mr: 0, width: '25%' ,pt: '50px', display:"flex",  justifyContent: 'center',}}>
+          <List sx={{display: {xs: 'flex', lg: 'block'}, gap: {xs: '5px'}, alignItems: 'center' , justifyContent: 'center', height: '100%', width:"50%"}}>
             <ListItemButton
               
               sx={{ my:3, borderRadius: "16px", border: 1, hieght: '4rem', display: 'flex', alignItems: 'center', justifyContent: 'center'}}
@@ -274,19 +274,18 @@ const UserHome = () => {
             ))}
           </List>
         </Box>
-      </div>
 
+        <div style={{width:"75%"}}>
       {name1 === "Profile Details" && (
-        <div className="">
+        <div >
+          {/* style={{width:"90%", display:"flex", justifyContent:"center"}} */}
           <h1 style={{marginLeft:"30%"}}>Profile Details</h1>
           <Card
             sx={{
-              width: "100%",
-              height: "550px",
+              width: "90%",
               marginBottom: 4,
               marginTop: 5,
               display: "flex",
-
               flexDirection: { xs: 'column-reverse', sm: 'row'},
               borderRadius: "16px",
               border: 1,
@@ -332,10 +331,10 @@ const UserHome = () => {
         </div>
       )}
 
-      {name1 === "Create Blogs" && (
+      {name1 === "Create Blogs" && (                
         <div className="mainsection">
           <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>Create blogs</h1>
-          <Grid sx={{borderRadius: "16px", border: 1, height:"60vh"}}>
+          <Grid sx={{borderRadius: "16px", border: 1, width:"90%"}}>
 
           <Box
             component="form"
@@ -436,7 +435,7 @@ const UserHome = () => {
       {name1 === "Create New User" && (
         <div className="mainsection">
           <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>Create New User Account</h1>
-          <Grid sx={{borderRadius: "16px", border: 1, height:"60vh"}}>
+          <Grid sx={{borderRadius: "16px", border: 1, width:"90%"}}>
 
           <Box
             component="form"
@@ -560,7 +559,7 @@ const UserHome = () => {
       {name1 === "Update Profile" && (
         <div className="mainsection">
           <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>Update User Information</h1>
-          <Grid sx={{borderRadius: "16px", border: 1, height:"60vh"}}>
+          <Grid sx={{borderRadius: "16px", border: 1, width:"90%"}}>
           <Box
             component="form"
             onSubmit={handleSubmit}
@@ -706,9 +705,13 @@ const UserHome = () => {
           </Grid>
         </div>
       )}
+</div>
+ 
+    </Box >
+    <div style={{width:"100%" ,margin:"auto", display:"flex", flexDirection:"column", justifyContent:"center"}}>
+        <h1 style={{display: "flex",justifyContent:"center", marginTop:"5vh"}}>BLOGS</h1>
+        <div style={{width:"80%" ,margin:"auto", display:"flex", flexDirection:"column", justifyContent:"center"}}>
 
-      <div className="blogsection">
-        <h1 style={{marginLeft:"30%", marginTop:"5vh"}}>BLOGS</h1>
         {blogs.map((blog) => (
           <Accordion expanded={expanded === `${blog._id}`} onChange={handleChangeBlog(blog._id)} sx={{my:5, mx:2}}>
         <AccordionSummary
@@ -728,9 +731,9 @@ const UserHome = () => {
         </AccordionDetails>
       </Accordion>
         ))}
-
+</div>
       </div>
-    </Box>
+    </div>
   );
 };
 

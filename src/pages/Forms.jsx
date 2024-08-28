@@ -43,7 +43,7 @@ function Forms() {
 
   return (
     <div style={{ display: "flex" }}>
-      <Box sx={{ m: 10, width: "15%" }}>
+      <Box sx={{ mx: 10, my:5, width: "15%" }}>
         <List>
           <ListItemButton
             key={"leave-letters"}
@@ -79,7 +79,7 @@ function Forms() {
           </ListItemButton>
         </List>
       </Box>
-      <Box sx={{ flexGrow: 1, width: "85%", mt: 5 }}>
+      <Box sx={{ flexGrow: 1, width: "85%", mt: 10 }}>
         <Grid
           container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }}
         >
