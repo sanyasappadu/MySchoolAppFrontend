@@ -44,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://my-school-app-frontend.vercel.app"
+  "proxy": "https://myschoolappbackend.onrender.com"
 }

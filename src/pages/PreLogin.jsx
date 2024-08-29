@@ -22,15 +22,17 @@ function PreLogin() {
   }, [user]);
 
   return (
-    <div style={{marginTop:"15%",marginBottom:"25%", marginLeft:"45%"}}>
-            <h2 style={{marginLeft:"2vw", marginBottom:"2vh"}}>Get started</h2>
-            <div >
+    <div style={{width:"100%", height:"70vh",alignItems:"center", display:"flex", justifyContent:"center"}}>
+      <div style={{width:"30vw",height:"40vh", border:"1px solid gray ", borderRadius:"12px", alignItems:"center", display:"flex",flexDirection:"column", justifyContent:"flex-start", }}>
+            <h2 style={{display:"flex",flexDirection:"column", justifyContent:"center",marginTop:"10vh"}}>Get started</h2>
+            <div style={{display:"flex", flexDirection:"row",marginTop:"5vh", alignItems:""}}>
               <Link to="/login"  className="link-component">
                 <Button>Log in</Button>
               </Link>
               <Link to="/signup" className="link-component">
                 <Button sx={{ ml: 3 }}>Sign up</Button>
               </Link>
+            </div>
             </div>
     </div>
   )
