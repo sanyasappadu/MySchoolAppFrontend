@@ -51,8 +51,8 @@ function Home() {
           </AspectRatio>
           <CardContent orientation="horizontal">
             <div>
-              <Typography fontSize="lg" fontWeight="lg">
-                <Typography sx={{ ml: 1 }}>Fill the form </Typography>
+            <Typography fontSize="lg" fontWeight="lg" sx={{display:"flex", alignItems:"center",justifyContent:"center"}}>
+            <Typography sx={{ ml: 1 }}>Fill the form </Typography>
                 <ArrowForwardIcon sx={{ ml: 2 }} />
               </Typography>
             </div>
@@ -83,9 +83,9 @@ function Home() {
           </AspectRatio>
           <CardContent orientation="horizontal">
             <div>
-              <Typography fontSize="lg" fontWeight="lg">
-                <Typography sx={{ ml: 1 }}>Fill the form </Typography>
-                <ArrowForwardIcon sx={{ ml: 2 }} />
+              <Typography fontSize="lg" fontWeight="lg" sx={{display:"flex", alignItems:"center",justifyContent:"center"}}>
+                <Typography sx={{ mr: 1 }}>Fill the form </Typography>
+                <ArrowForwardIcon sx={{ ml: 2}} />
               </Typography>
             </div>
             <Link to="/complaintform" className="link-component">
@@ -115,8 +115,8 @@ function Home() {
           </AspectRatio>
           <CardContent orientation="horizontal">
             <div>
-              <Typography fontSize="lg" fontWeight="lg">
-                <Typography sx={{ ml: 1 }}>Fill the form </Typography>
+            <Typography fontSize="lg" fontWeight="lg" sx={{display:"flex", alignItems:"center",justifyContent:"center"}}>
+            <Typography sx={{ ml: 1 }}>Fill the form </Typography>
                 <ArrowForwardIcon sx={{ ml: 2 }} />
               </Typography>
             </div>
@@ -147,8 +147,8 @@ function Home() {
           </AspectRatio>
           <CardContent orientation="horizontal">
             <div>
-              <Typography fontSize="lg" fontWeight="lg">
-                <Typography sx={{ ml: 1 }}>Fill the form </Typography>
+            <Typography fontSize="lg" fontWeight="lg" sx={{display:"flex", alignItems:"center",justifyContent:"center"}}>
+            <Typography sx={{ ml: 1 }}>Fill the form </Typography>
                 <ArrowForwardIcon sx={{ ml: 2 }} />
               </Typography>
             </div>
